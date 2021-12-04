@@ -13,7 +13,7 @@ class NavBar extends Component {
   render() {
     const { className: classes } = this.props;
     return (
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography variant="h6" className={classes.root}>
             i2Eye
@@ -32,8 +32,8 @@ class NavBar extends Component {
               </IconButton>
             </Tooltip>
           </Link>
-          <Link to="/queue">
-            <Tooltip title="Queue">
+          <Link to="/patient_tracker">
+            <Tooltip title="Patient Tracker">
               <IconButton className={classes.icon}>
                 <PeopleAltIcon />
               </IconButton>
