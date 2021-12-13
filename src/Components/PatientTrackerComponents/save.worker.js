@@ -4,6 +4,7 @@ import autoTable from "jspdf-autotable";
 import getIndivPDF from "./getIndivPDF";
 
 global.window = {};
+var self = this;
 
 self.addEventListener("message", function (event) {
   switch (event.data.message) {
