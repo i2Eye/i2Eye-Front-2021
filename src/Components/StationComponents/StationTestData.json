@@ -1,0 +1,35 @@
+[
+    { 
+        "stationName": "Oral Health", 
+        "tag": "oralHealth", 
+        "available": "true" 
+    }, { 
+        "stationName": "BMI and Abdominal Obesity", 
+        "tag": "bmi", 
+        "available": "true" 
+    }, { 
+        "stationName": "Eye Screening", 
+        "tag": "eyeScreening", 
+        "available": "true" 
+    }, { 
+        "stationName": "Phlebotomy Test", 
+        "tag": "phlebotomy", 
+        "available": "true" 
+    }, { 
+        "stationName": "Fingerstick Blood Test", 
+        "tag": "fingerstickAnemia", 
+        "available": "true" 
+    }, { 
+        "stationName": "Doctor Consult", 
+        "tag": "doctorConsult", 
+        "available": "true" 
+    }, { 
+        "stationName": "Fingerstick Test (RCBG)", 
+        "tag": "fingerstickRCBG", 
+        "available": "true" 
+    }, { 
+        "stationName": "Blood Pressure Test", 
+        "tag": "bloodPressure", 
+        "available": "true" 
+    }
+]
