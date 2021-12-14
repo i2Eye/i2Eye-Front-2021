@@ -7,162 +7,87 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Button from "@material-ui/core/Button";
-import getTestData from "../../../TestData";
+import getTestQuestions from "../../../TestQuestions"
 import "../../../dbFunctions";
 import { updatePatientData, getPatient } from "../../../dbFunctions";
 import ErrorSnackbar from "./ErrorSnackbar";
 
-const questions = [
-  { num: 1, question: "Hb level (g/dL)", label: "Hb level (g/dL)", id: "Hb" },
-  {
-    num: 2,
-    question: "How many meals do you eat a day?",
-    label: "Meals per day",
-    id: "meals",
-  },
-];
-
-const radioQuestions = [
-  {
-    num: 3,
-    question:
-      "How often do you eat protein (eg. daal, mung, rajma, chole, chana)",
-    id: "protein",
-  },
-  {
-    num: 4,
-    question: "How often do you eat carbohydrates (eg. chapati, rice)",
-    id: "carbohydrates",
-  },
-  {
-    num: 5,
-    question: "How often do you eat vegetables (eg. gobhi, patta gobhi, saag)",
-    id: "vegetables",
-  },
-  {
-    num: 6,
-    question: "How often do you eat sweets/desserts (eg. gulab jamun)",
-    id: "sweets",
-  },
-];
+var data;
 
 class Fingerstick extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Hb: "",
-      meals: "",
-      protein: "",
-      carbohydrates: "",
-      vegetables: "",
-      sweets: "",
-      errorPresent: false,
+      errorPresent : false
     };
+    data = getTestQuestions().fingerstickAnemia;
+    for (let i = 0; i < data.length; i++) {
+      this.state[data[i].question] = "";
+    }
+  
   }
 
   async componentDidMount() {
     const data = getPatient(this.props.id).then((response) => {
-      this.setState({
-        Hb: response["Fingerstick Blood Test (Anemia)"][0].answers,
-        meals: response["Fingerstick Blood Test (Anemia)"][1].answers,
-        protein: response["Fingerstick Blood Test (Anemia)"][2].answers,
-        carbohydrates: response["Fingerstick Blood Test (Anemia)"][3].answers,
-        vegetables: response["Fingerstick Blood Test (Anemia)"][4].answers,
-        sweets: response["Fingerstick Blood Test (Anemia)"][4].answers,
-      });
+      const res = response["Fingerstick Blood Test (Anemia)"];
+      for (let i = 0; i < res.length; i++) {
+        this.setState({[res[i].question]: res[i].answers})
+      }
     });
   }
 
   handleRadioChange(e) {
-    if (e.target.name === "protein") {
-      this.setState({ protein: e.target.value });
-    }
-    if (e.target.name === "carbohydrates") {
-      this.setState({ carbohydrates: e.target.value });
-    }
-    if (e.target.name === "vegetables") {
-      this.setState({ vegetables: e.target.value });
-    }
-    if (e.target.name === "sweets") {
-      this.setState({ sweets: e.target.value });
-    }
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   handleChange(e) {
-    if (e.target.id === "Hb") {
-      this.setState({ Hb: e.target.value });
-    }
-    if (e.target.id === "meals") {
-      this.setState({ meals: e.target.value });
-    }
+    this.setState({ [e.target.id]: e.target.value });
   }
 
-  handleSubmit() {
-    if (
-      !this.state.Hb ||
-      !this.state.meals ||
-      !this.state.protein ||
-      !this.state.carbohydrates ||
-      !this.state.vegetables ||
-      !this.state.sweets
-    ) {
-      alert("Required fields cannot be left empty!");
-    } else {
-      //get final data of form
-      console.log(this.state);
-      const answers = {
-        "Fingerstick Blood Test (Anemia)": [
-          {
-            answers: this.state.Hb,
-            num: 1,
-            question: "Hb level (g/dL)",
-          },
-          {
-            answers: this.state.meals,
-            num: 2,
-            question: "How many meals do you eat a day?",
-          },
-          {
-            answers: this.state.protein,
-            num: 3,
-            question:
-              "How often do you eat protein (eg. daal, mung, rajma, chole, chana)?",
-          },
-          {
-            answers: this.state.carbohydrates,
-            num: 4,
-            question: "How often do you eat carbohydrates (eg. chapati, rice)?",
-          },
-          {
-            answers: this.state.vegetables,
-            num: 5,
-            question:
-              "How often do you eat vegetables (eg. gobhi, patta gobhi, saag)?",
-          },
-          {
-            answers: this.state.sweets,
-            num: 6,
-            question: "How often do you eat sweets/desserts (eg. gulab jamun)?",
-          },
-        ],
-      };
 
-      updatePatientData(this.props.id, answers).then((response) =>
-        this.setState({ errorPresent: false }, () => {
-          if (response === false) {
-            this.setState({ errorPresent: true });
-          } else {
-            this.props.onChange();
-          }
-        })
-      );
-    }
+  handleSubmit() {
+    const answers = {"Fingerstick Blood Test (Anemia)": []};
+  
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].required) {
+        if (!this.state[data[i].question]) {
+          alert("Required fields cannot be left empty!");
+          return;
+        }
+      }
+        const result  = {
+                  answers: this.state[data[i].question],
+                  num: i + 1,
+                  question: data[i].question,
+                }
+
+            answers["Fingerstick Blood Test (Anemia)"].push(result);
+
+      }
+     
+        updatePatientData(this.props.id, answers).then((response) =>
+            this.setState({ errorPresent: false }, () => {
+              if (response === false) {
+                this.setState({ errorPresent: true });
+              } else {
+                this.props.onChange();
+              }
+            })
+          );
+        
+        
+  }
+
+  renderOptions(item) {
+    return <FormControlLabel
+    key = {item}
+    value= {item}
+    control={<Radio />}
+    label= {item}
+  />
   }
 
   render() {
-    const data = getTestData(this.props.patientID);
-    const prevData = data.fingerstickAnemia;
-
     return (
       <div>
         {this.state.errorPresent && (
@@ -175,35 +100,39 @@ class Fingerstick extends Component {
         </h1>
         <form>
           <ol>
-            {questions.map((question) => (
-              <div key={question.question}>
-                <li
-                  style={{
-                    fontFamily: "sans-serif",
-                    fontSize: 22,
-                    fontWeight: "normal",
-                  }}
-                >
-                  <span>
-                    <InputLabel
-                      style={{ fontSize: 22, color: "black" }}
-                      required
-                    >
-                      {question.question}
-                    </InputLabel>
-                    <TextField
-                      id={question.id}
-                      onChange={this.handleChange.bind(this)}
-                      type="number"
-                      label={question.label}
-                      value={this.state[question.id]}
-                    />
-                    <p />
-                  </span>
-                </li>
-              </div>
-            ))}
-            {radioQuestions.map((question) => (
+            {data.map((question) => {
+              if (question.type == "text") {
+                return (<div key={question.question}>
+                  <li
+                    style={{
+                      fontFamily: "sans-serif",
+                      fontSize: 22,
+                      fontWeight: "normal",
+                    }}
+                  >
+                    <span>
+                      <InputLabel
+                        style={{ fontSize: 22, color: "black" }}
+                        required = {question.required}
+                      >
+                        {question.question}
+                      </InputLabel>
+                      <TextField
+                        id={question.question}
+                        onChange={this.handleChange.bind(this)}
+                        type="number"
+                        label={question.label}
+                        value={this.state[question.question]}
+                      />
+                    </span>
+                  </li>
+                </div>
+                  )
+              }
+              })}
+            {data.map((question) => {
+              if (question.type == "radio") {
+                return (
               <div key={question.question}>
                 <li
                   style={{
@@ -216,52 +145,23 @@ class Fingerstick extends Component {
                     <FormLabel
                       component="legend"
                       style={{ fontSize: 22, color: "black" }}
-                      required
+                      required = {question.required}
                     >
                       {question.question}
                     </FormLabel>
                     <RadioGroup
                       aria-label="frequency"
-                      name={question.id}
+                      name={question.question}
                       onChange={this.handleRadioChange.bind(this)}
-                      value={this.state[question.id]}
+                      value={this.state[question.question]}
                     >
-                      <FormControlLabel
-                        value="Never"
-                        control={<Radio />}
-                        label="Never"
-                      />
-                      <FormControlLabel
-                        value="1-2 times a month"
-                        control={<Radio />}
-                        label="1-2 times a month"
-                      />
-                      <FormControlLabel
-                        value="1-3 times weekly"
-                        control={<Radio />}
-                        label="1-3 times weekly"
-                      />
-                      <FormControlLabel
-                        value="4-5 times weekly"
-                        control={<Radio />}
-                        label="4-5 times weekly"
-                      />
-                      <FormControlLabel
-                        value="Once a day"
-                        control={<Radio />}
-                        label="Once a day"
-                      />
-                      <FormControlLabel
-                        value="More than once daily"
-                        control={<Radio />}
-                        label="More than once daily"
-                      />
+                      {question.options.map(x => this.renderOptions(x))}
                     </RadioGroup>
                   </FormControl>
                   <p />
                 </li>
               </div>
-            ))}
+            )}})}
             <Button
               size="large"
               color="primary"
