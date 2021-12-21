@@ -101,7 +101,7 @@ class Fingerstick extends Component {
         <form>
           <ol>
             {data.map((question) => {
-              if (question.type == "text") {
+              if (question.type === "text") {
                 return (<div key={question.question}>
                   <li
                     style={{
@@ -121,7 +121,7 @@ class Fingerstick extends Component {
                         id={question.question}
                         onChange={this.handleChange.bind(this)}
                         type="number"
-                        label={question.label}
+                        label={question.question}
                         value={this.state[question.question]}
                       />
                     </span>
@@ -129,9 +129,8 @@ class Fingerstick extends Component {
                 </div>
                   )
               }
-              })}
-            {data.map((question) => {
-              if (question.type == "radio") {
+              
+              if (question.type === "radio") {
                 return (
               <div key={question.question}>
                 <li

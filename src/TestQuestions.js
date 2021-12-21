@@ -1,5 +1,39 @@
 const getTestQuestions = () => {
     return {
+        "eyeScreening" : [
+            {
+                questionNum: 1,
+                question: "SNC ID",
+                type: "text",
+                required: true
+            }
+        ],
+        "doctorConsult" : [
+            {
+                questionNum: 1,
+                question: "Urgent doctor's consult: Reason for consultation/chief complaint",
+                type: "text",
+                required: true
+            },
+            {
+                questionNum: 2,
+                question: "Urgent doctor's consult: Others (include prescriptions if any)",
+                type: "text",
+                required: true
+            },
+            {
+                questionNum: 3,
+                question: "Standard doctor's consult: Reason for consultation/chief complaint",
+                type: "text",
+                required: true
+            },
+            {
+                questionNum: 4,
+                question: "Standard doctor's consult: Others (include prescriptions if any)",
+                type: "text",
+                required: true
+            },
+        ],
        "bloodpressure" : [
             {
                 questionNum: 1,

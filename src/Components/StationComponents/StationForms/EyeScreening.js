@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
 import getTestData from "../../../TestData";
+import getTestQuestions from "../../../TestQuestions"
 import "../../../dbFunctions";
 import { updatePatientData, getPatient } from "../../../dbFunctions";
 import Success from "./Success";
@@ -10,43 +11,55 @@ import ErrorSnackbar from "./ErrorSnackbar";
 
 const questions = [{ question: "SNC ID" }];
 
+var data;
 class EyeScreening extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
-      errorPresent: false,
+      errorPresent : false
     };
+    data = getTestQuestions().eyeScreening;
+    for (let i = 0; i < data.length; i++) {
+      this.state[data[i].question] = "";
+    }
   }
 
   async componentDidMount() {
     const data = getPatient(this.props.id).then((response) => {
-      this.setState({
-        id: response["Eye Screening"][0].answers,
-      });
+      const res = response["Eye Screening"];
+      for (let i = 0; i < res.length; i++) {
+        this.setState({[res[i].question]: res[i].answers})
+      }
     });
   }
 
   handleChange(e) {
-    this.setState({ id: e.target.value });
+    this.setState({ [e.target.label]: e.target.value });
+  }
+
+  handleRadioChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   handleSubmit() {
-    if (!this.state.id) {
-      alert("Required fields cannot be left empty!");
-    } else {
-      //get final data of form
-      console.log(this.state);
-      alert("Eye screening station form submitted successfully!");
-      const answers = {
-        "Eye Screening": [
-          {
-            answers: this.state.id,
-            num: 1,
-            question: "SNC ID",
-          },
-        ],
-      };
+    const answers = {"Eye Screening": []};
+  
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].required) {
+        if (!this.state[data[i].question]) {
+          alert("Required fields cannot be left empty!");
+          return;
+        }
+      }
+        const result  = {
+                  answers: this.state[data[i].question],
+                  num: i + 1,
+                  question: data[i].question,
+                }
+
+            answers["Eye Screening"].push(result);
+
+      }
 
       updatePatientData(this.props.id, answers).then((response) =>
         this.setState({ errorPresent: false }, () => {
@@ -57,9 +70,18 @@ class EyeScreening extends Component {
           }
         })
       );
-    }
   }
 
+  renderOptions(item) {
+    return <FormControlLabel
+    key = {item}
+    value= {item}
+    control={<Radio />}
+    label= {item}
+  />
+  }
+
+  
   render() {
     return (
       <div>
@@ -73,7 +95,9 @@ class EyeScreening extends Component {
         </h1>
         <form>
           <ol>
-            {questions.map((question) => (
+            {data.map((question) => {
+              if (question.type === "text") {
+                return (
               <div key={question.question}>
                 <li
                   style={{
@@ -85,7 +109,7 @@ class EyeScreening extends Component {
                   <span>
                     <InputLabel
                       style={{ fontSize: 22, color: "black" }}
-                      required
+                      required={question.required}
                     >
                       {question.question}
                     </InputLabel>
@@ -95,13 +119,46 @@ class EyeScreening extends Component {
                       name="search"
                       type="text"
                       label={question.question}
-                      value={this.state.id}
+                      value={this.state[question.question]}
                     />
                     <p />
                   </span>
                 </li>
+              </div>)
+              }
+
+              if (question.type === "radio") {
+                return (
+              <div key={question.question}>
+                <li
+                  style={{
+                    fontFamily: "sans-serif",
+                    fontSize: 22,
+                    fontWeight: "normal",
+                  }}
+                >
+                  <FormControl component="fieldset">
+                    <FormLabel
+                      component="legend"
+                      style={{ fontSize: 22, color: "black" }}
+                      required = {question.required}
+                    >
+                      {question.question}
+                    </FormLabel>
+                    <RadioGroup
+                      aria-label="frequency"
+                      name={question.question}
+                      onChange={this.handleRadioChange.bind(this)}
+                      value={this.state[question.question]}
+                    >
+                      {question.options.map(x => this.renderOptions(x))}
+                    </RadioGroup>
+                  </FormControl>
+                  <p />
+                </li>
               </div>
-            ))}
+            )}})}
+
             <Button
               size="large"
               color="primary"
