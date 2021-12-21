@@ -7,25 +7,8 @@ import { updatePatientData, getPatient } from "../../../dbFunctions";
 import ErrorSnackbar from "./ErrorSnackbar";
 import getTestQuestions from "../../../TestQuestions"
 
-const questions = [
-  { question: "Urgent doctor's consult: doctor's notes", id: "Urgent" },
-  { question: "Standard doctor's consult: doctor's notes", id: "Standard" },
-];
-
-const subQuestions = [
-  {
-    question: "Reason for consultation/ chief complaint",
-    label: "Reason",
-    id: "Reason",
-  },
-  {
-    question: "Others (include prescriptions if any)",
-    label: "Others",
-    id: "Others",
-  },
-];
-
 var data;
+
 class Doctor extends Component {
   constructor(props) {
     super(props);
