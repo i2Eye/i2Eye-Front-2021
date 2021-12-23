@@ -9,105 +9,53 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 import getTestData from "../../../TestData";
+import getTestQuestions from "../../../TestQuestions"
 import "../../../dbFunctions";
 import { updatePatientData, getPatient } from "../../../dbFunctions";
 import ErrorSnackbar from "./ErrorSnackbar";
 
-const questions = [
-  {
-    question: "Systolic BP Reading 1 (mmHg)",
-    key: "Systolic1",
-  },
-  {
-    question: "Diastolic BP Reading 1 (mmHg)",
-    key: "Diastolic1",
-  },
-  {
-    question: "Systolic BP Reading 2 (mmHg)",
-    key: "Systolic2",
-  },
-  {
-    question: "Diastolic BP Reading 2 (mmHg)",
-    key: "Diastolic2",
-  },
-];
-
-const radioQuestions = [
-  {
-    question: "Is patient > 18 years old?",
-    helper: "If Yes, proceed. If No, skip blood pressure station.",
-  },
-];
+var data;
 
 class BloodPressure extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      age: "",
-      Systolic1: "",
-      Diastolic1: "",
-      Systolic2: "",
-      Diastolic2: "",
-      errorPresent: false,
+      errorPresent : false
     };
+    data = getTestQuestions().bloodpressure;
+    for (let i = 0; i < data.length; i++) {
+      this.state[data[i].question] = "";
+    }
   }
 
   async componentDidMount() {
     const data = getPatient(this.props.id).then((response) => {
-      this.setState({
-        age: response["Blood Pressure"][0].answers,
-        Systolic1: response["Blood Pressure"][1].answers,
-        Diastolic1: response["Blood Pressure"][2].answers,
-        Systolic2: response["Blood Pressure"][3].answers,
-        Diastolic2: response["Blood Pressure"][4].answers,
-      });
-      console.log(response.bloodPressure);
+      const res = response["Blood Pressure"];
+      for (let i = 0; i < res.length; i++) {
+        this.setState({[res[i].question]: res[i].answers})
+      }
     });
   }
 
   handleSubmit() {
-    //get final data of form
-    if (!this.state.age) {
-      alert("Required fields cannot be left empty!");
-    } else if (
-      this.state.age === "Above 18" &&
-      (!this.state.Systolic1 ||
-        !this.state.Systolic2 ||
-        !this.state.Diastolic1 ||
-        !this.state.Diastolic2)
-    ) {
-      alert("Required fields cannot be left empty!");
-    } else {
-      console.log(this.state);
-      const answers = {
-        "Blood Pressure": [
-          {
-            answers: this.state.age,
-            num: 1,
-            question: "Is patient > 18 years old?",
-          },
-          {
-            answers: this.state.Systolic1,
-            num: 2,
-            question: "Systolic BP Reading 1 (mmHg)",
-          },
-          {
-            answers: this.state.Diastolic1,
-            num: 3,
-            question: "Diastolic BP Reading 1 (mmHg)",
-          },
-          {
-            answers: this.state.Systolic2,
-            num: 4,
-            question: "Systolic BP Reading 2 (mmHg)",
-          },
-          {
-            answers: this.state.Diastolic2,
-            num: 5,
-            question: "Diastolic BP Reading 2 (mmHg)",
-          },
-        ],
-      };
+    const answers = {"Blood Pressure": []};
+  
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].required) {
+        if (!this.state[data[i].question]) {
+          alert("Required fields cannot be left empty!");
+          return;
+        }
+      }
+        const result  = {
+                  answers: this.state[data[i].question],
+                  num: i + 1,
+                  question: data[i].question,
+                }
+
+            answers["Blood Pressure"].push(result);
+
+      }
 
       updatePatientData(this.props.id, answers).then((response) =>
         this.setState({ errorPresent: false }, () => {
@@ -118,34 +66,23 @@ class BloodPressure extends Component {
           }
         })
       );
-    }
   }
 
   handleChange(e) {
-    if (e.target.id === "Systolic1") {
-      this.setState({
-        Systolic1: e.target.value,
-      });
-    }
-    if (e.target.id === "Diastolic1") {
-      this.setState({
-        Diastolic1: e.target.value,
-      });
-    }
-    if (e.target.id === "Systolic2") {
-      this.setState({
-        Systolic2: e.target.value,
-      });
-    }
-    if (e.target.id === "Diastolic2") {
-      this.setState({
-        Diastolic2: e.target.value,
-      });
-    }
+    this.setState({ [e.target.id]: e.target.value });
   }
 
-  handleAgeChange(e) {
-    this.setState({ age: e.target.value });
+  handleRadioChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  renderOptions(item) {
+    return <FormControlLabel
+    key = {item}
+    value= {item}
+    control={<Radio />}
+    label= {item}
+  />
   }
 
   render() {
@@ -161,8 +98,9 @@ class BloodPressure extends Component {
         </h1>
         <form>
           <ol>
-            {radioQuestions.map((question) => (
-              <div key={question.question}>
+            {data.map((question) => {
+              if (question.type === "radio") {
+                return (<div key={question.question}>
                 <li
                   style={{
                     fontFamily: "sans-serif",
@@ -174,35 +112,25 @@ class BloodPressure extends Component {
                     <FormLabel
                       component="legend"
                       style={{ fontSize: 22, color: "black" }}
+                      required = {question.required}
                     >
                       {question.question}
                     </FormLabel>
                     <RadioGroup
                       aria-label="age"
-                      name="age"
-                      onChange={this.handleAgeChange.bind(this)}
-                      value={this.state.age}
+                      name={question.question}
+                      onChange={this.handleRadioChange.bind(this)}
+                      value={this.state[question.question]}
                     >
-                      <FormControlLabel
-                        value="Above 18"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="18 and below"
-                        control={<Radio />}
-                        label="No"
-                      />
+                      {question.options.map(x => this.renderOptions(x))}
                     </RadioGroup>
-                    <FormHelperText style={{ color: "red", fontSize: 15 }}>
-                      {question.helper}
-                    </FormHelperText>
                   </FormControl>
                   <p />
                 </li>
-              </div>
-            ))}
-            {questions.map((question) => (
+              </div>)}
+
+          if (question.type === "text") {
+            return (
               <div key={question.question}>
                 <li
                   style={{
@@ -212,26 +140,25 @@ class BloodPressure extends Component {
                   }}
                 >
                   <span>
-                    <InputLabel style={{ fontSize: 22, color: "black" }}>
+                    <InputLabel 
+                    style={{ fontSize: 22, color: "black" }}
+                    required = {question.required}>
                       {question.question}
                     </InputLabel>
                     <TextField
-                      key={question.key}
-                      id={question.key}
+                      key={question.question}
+                      id={question.question}
                       type="number"
                       label={question.question}
                       style={{ width: "300px" }}
                       onChange={this.handleChange.bind(this)}
-                      disabled={
-                        this.state.age === "18 and below" ? true : false
-                      }
-                      value={this.state[question.key]}
+                      value={this.state[question.question]}
                     />
                     <p />
                   </span>
                 </li>
               </div>
-            ))}
+            )}})}
             <Button
               size="large"
               color="primary"
