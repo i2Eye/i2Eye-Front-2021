@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import HealingIcon from "@material-ui/icons/Healing";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import BallotIcon from "@material-ui/icons/Ballot";
+import EditIcon from '@material-ui/icons/Edit';
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -36,6 +37,13 @@ class NavBar extends Component {
             <Tooltip title="Patient Tracker">
               <IconButton className={classes.icon}>
                 <PeopleAltIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+          <Link to="/edit_forms">
+            <Tooltip title="Edit Forms">
+              <IconButton className={classes.icon}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
           </Link>

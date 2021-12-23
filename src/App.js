@@ -13,6 +13,9 @@ const Form = lazy(() => import("./Components/StationComponents/Form"));
 const PatientSearch = lazy(() =>
   import("./Components/StationComponents/PatientSearch")
 );
+const EditForms = lazy(() =>
+  import("./Components/StationComponents/EditForms")
+);
 
 export default function App() {
   const classes = useStyles();
@@ -57,6 +60,11 @@ export default function App() {
                 exact
                 path="/stations/:stationName/edit/:patientID"
                 component={Form}
+              />
+              <Route
+                exact
+                path="/edit_forms"
+                component={EditForms}
               />
             </Switch>
           </Suspense>
