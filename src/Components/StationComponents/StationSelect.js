@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Data from "./StationTestData.json";
+import { getStationAvailability } from "../../dbFunctions";
 
 const useStyles = (theme) => ({
   root: {
@@ -18,21 +19,47 @@ const useStyles = (theme) => ({
   },
 });
 
-function readJsonData() {
-  var stationsArray = [];
-
-  for (var i = 0; i < Data.length; i++) {
-    var isAvailable = (Data[i].available.toLowerCase() === "true");
-    stationsArray.push({ name: Data[i].stationName, tag: Data[i].tag, checked: isAvailable });
-  }
-
-  return stationsArray;
-}
-
 class StationSelect extends Component {
   state = {
-    stations: readJsonData(),
+    stations: [],
   };
+
+  /** Reads station names and tags from json file */
+  constructor(props) {
+    super(props);
+    var stationsArray = [];
+
+    for (var i = 0; i < Data.length; i++) {
+      stationsArray.push({
+        name: Data[i].stationName,
+        tag: Data[i].tag,
+        checked: false, // Stations all set as unavailable first
+      });
+    }
+    this.state = { stations: stationsArray };
+  }
+
+  /** Updates the availability of each station using data from backend */
+  getAvailabilities = () => {
+    const availabilityPromise = getStationAvailability();
+    const promisedAvailabilities = availabilityPromise.then((result) => {
+      return result;
+    });
+
+    const newStations = [...this.state.stations];
+    const setAvailabilities = async () => {
+      const actualAvailabilities = await promisedAvailabilities;
+      for (var i = 0; i < Data.length; i++) {
+        newStations[i].checked = actualAvailabilities[newStations[i].name];
+      }
+      this.setState({ stations: newStations });
+    };
+    setAvailabilities();
+  };
+  
+  componentDidMount() {
+    this.getAvailabilities();
+  }
 
   /* Takes in an index to find which station to handle. The event prop is automatically passed in through onChange and the state is updated */
   handleToggle = (index) => (event) => {
