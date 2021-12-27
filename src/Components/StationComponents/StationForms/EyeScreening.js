@@ -6,12 +6,14 @@ import getTestData from "../../../TestData";
 import getTestQuestions from "../../../TestQuestions"
 import "../../../dbFunctions";
 import { updatePatientData, getPatient } from "../../../dbFunctions";
+import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from '@material-ui/core';
 import Success from "./Success";
 import ErrorSnackbar from "./ErrorSnackbar";
 
 const questions = [{ question: "SNC ID" }];
 
 var data;
+
 class EyeScreening extends Component {
   constructor(props) {
     super(props);
