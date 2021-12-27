@@ -11,6 +11,11 @@ import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import IconButton from '@material-ui/core/IconButton';
 import List from "@material-ui/core/List";
 import Button from '@material-ui/core/Button';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,55 +50,138 @@ function a11yProps(index) {
   };
 }
 
+function AddFormTab() {
+  const [questions, setQuestions] = React.useState([""]);
+
+  const handleTextChange = (qnIndex) => {
+    return (e) => {
+      questions[qnIndex] = e.target.value;
+    };
+  }
+
+  const addQuestion = () => setQuestions((prev)=>{
+    prev.forEach((str) => console.log(str));
+    return [...prev, ""];
+  });
+  const removeQuestion = (qnIndex) => () => setQuestions((prev)=> {
+    prev.forEach((str) => console.log(str));
+    return prev.filter((qn, index) => index !== qnIndex)
+  });
+  
+  function InputField(props) {
+    return (
+      <ul>
+        <div>
+          <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" onChange={handleTextChange(props.index)} />
+          <IconButton onClick={addQuestion}><AddCircle /></IconButton>
+          <IconButton onClick={removeQuestion(props.index)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
+        </div>
+      </ul>
+    )
+  }
+
+  return (
+    <Paper
+      style={{
+        paddingTop: 20,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 20,
+      }}
+    >
+      <List>
+        <ul>
+          <TextField required id="outlined-basic" label="Form Name" variant="outlined" /><br></br>
+        </ul>
+        {questions.map((question, index) => {return <InputField question={question} index={index} />})}
+      </List>
+      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
+    </Paper>
+  )
+}
+
+function DropFormTab() {
+  const forms = ["Registration", "BMI", "Doctor Consultation", "Familty History", "Oral Health"];
+  // const formInit = {};
+  // forms.forEach((formName) => formInit[formName] = false);
+  let formsToDelete = [];
+  // const [formState, setForm] = React.useState(formInit);
+
+  // const handleChange = (event) => {
+  //   setForm({
+  //     ...formState,
+  //     [event.target.name]: event.target.checked,
+  //   });
+  // };
+
+  const handleChange = (event) => {
+    if (event.target.checked) {
+      formsToDelete.push(event.target.name);
+    } else {
+      formsToDelete = formsToDelete.filter((form) => form !== event.target.name);
+    }
+    formsToDelete.forEach((name) => console.log(name));
+  };
+
+  function FormCheckBox(props) {
+    return (
+      <FormControlLabel 
+        control={
+          <Checkbox onChange={handleChange} name={props.name} />
+        }
+        label={props.name}
+      />
+    )
+  }
+
+  return (
+    <Paper
+      style={{
+        paddingTop: 20,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 20,
+      }}
+    >
+      <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+        <FormLabel component="legend">Select forms to drop</FormLabel>
+        <FormGroup>
+          {forms.map((form) => {return <FormCheckBox name={form} />})}
+        </FormGroup>
+      </FormControl>
+      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
+    </Paper>
+  )
+}
+
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [questions, setQuestions] = React.useState([0]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const addQuestion = () => setQuestions((prev)=>[...prev, 0]);
-  const removeQuestion = () => setQuestions((prev)=>prev.slice(0,-1));
-
   return (
     <div>
-    <h1>Edit Forms</h1>
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ width: '100%', borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Add" {...a11yProps(0)} />
           <Tab label="Update" {...a11yProps(1)} />
           <Tab label="Drop" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-      <Paper
-              style={{
-                paddingTop: 20,
-                paddingLeft: 30,
-                paddingRight: 30,
-                paddingBottom: 20,
-              }}
-        >
-            <List>
-            <TextField required id="outlined-basic" label="Form Name" variant="outlined" /><br></br>
-          {questions.map((question, index) => (
-            <div>
-            <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" />
-            <IconButton onClick={addQuestion}><AddCircle /></IconButton>
-            <IconButton onClick={removeQuestion} disabled={questions.length===1}><RemoveCircle /></IconButton></div>))}
-        </List>
-        <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
-        </Paper>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </Box>
+      <h1>Edit Forms</h1>
+      <Box sx={{ width: '100%' }}>
+        <TabPanel value={value} index={0}>
+          <AddFormTab />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Item Two
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <DropFormTab />
+        </TabPanel>
+      </Box>
     </div>
   );
 }
