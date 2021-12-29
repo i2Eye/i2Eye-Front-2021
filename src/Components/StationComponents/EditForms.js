@@ -51,34 +51,35 @@ function a11yProps(index) {
 }
 
 function AddFormTab() {
-  const [questions, setQuestions] = React.useState([""]);
+  const [key, setKey] = React.useState(1);
+  const [questions, setQuestions] = React.useState([{question: "", key: 0}]);
 
   const handleTextChange = (qnIndex) => {
     return (e) => {
-      questions[qnIndex] = e.target.value;
+      // questions[qnIndex].question = e.target.value;
+      e.persist();
+      setQuestions((prev) => {
+        const updated = prev.slice();
+        console.log(updated);
+        updated[qnIndex].question = e.target.value;
+        console.log(updated[qnIndex].question + ' ' + updated[qnIndex].key);
+        return updated;
+      })
     };
   }
 
-  const addQuestion = () => setQuestions((prev)=>{
-    prev.forEach((str) => console.log(str));
-    return [...prev, ""];
-  });
+  const addQuestion = () => {
+    setQuestions((prev)=>{
+      // prev.forEach((str) => console.log(str));
+      console.log(key);
+      return [...prev, {question: "", key: key}];
+    })
+    setKey(key + 1);
+  };
   const removeQuestion = (qnIndex) => () => setQuestions((prev)=> {
     prev.forEach((str) => console.log(str));
     return prev.filter((qn, index) => index !== qnIndex)
   });
-  
-  function InputField(props) {
-    return (
-      <ul>
-        <div>
-          <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" onChange={handleTextChange(props.index)} />
-          <IconButton onClick={addQuestion}><AddCircle /></IconButton>
-          <IconButton onClick={removeQuestion(props.index)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
-        </div>
-      </ul>
-    )
-  }
 
   return (
     <Paper
@@ -90,10 +91,18 @@ function AddFormTab() {
       }}
     >
       <List>
-        <ul>
+        <ul style={{marginBottom: 10}}>
           <TextField required id="outlined-basic" label="Form Name" variant="outlined" /><br></br>
         </ul>
-        {questions.map((question, index) => {return <InputField question={question} index={index} />})}
+        {questions.map((question, index) => (
+          <ul key={question.key}>
+            <div>
+              <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" value={question.question} onChange={handleTextChange(index)} />
+              <IconButton onClick={addQuestion}><AddCircle /></IconButton>
+              <IconButton onClick={removeQuestion(index)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
+            </div>
+          </ul>
+        ))}
       </List>
       <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
     </Paper>
