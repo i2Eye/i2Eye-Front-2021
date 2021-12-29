@@ -30,7 +30,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -102,55 +102,62 @@ function AddFormTab() {
 
 function DropFormTab() {
   const forms = ["Registration", "BMI", "Doctor Consultation", "Familty History", "Oral Health"];
-  // const formInit = {};
-  // forms.forEach((formName) => formInit[formName] = false);
-  let formsToDelete = [];
-  // const [formState, setForm] = React.useState(formInit);
+  const formInit = {};
+  forms.forEach((formName) => formInit[formName] = false);
 
-  // const handleChange = (event) => {
-  //   setForm({
-  //     ...formState,
-  //     [event.target.name]: event.target.checked,
-  //   });
-  // };
+  const formsToDelete = [];
+  const [formState, setForm] = React.useState(formInit);
 
   const handleChange = (event) => {
-    if (event.target.checked) {
-      formsToDelete.push(event.target.name);
-    } else {
-      formsToDelete = formsToDelete.filter((form) => form !== event.target.name);
-    }
-    formsToDelete.forEach((name) => console.log(name));
+    setForm({
+      ...formState,
+      [event.target.name]: event.target.checked,
+    });
   };
 
   function FormCheckBox(props) {
     return (
       <FormControlLabel 
         control={
-          <Checkbox onChange={handleChange} name={props.name} />
+          <Checkbox onChange={handleChange} name={props.name} checked={props.status}/>
         }
         label={props.name}
       />
     )
   }
 
+  function handleSubmit() {
+    forms.forEach((form) => {
+      if (formState[form]) {
+        formsToDelete.push(form);
+      }
+    });
+    formsToDelete.forEach((del) => console.log(del));
+  }
+
   return (
-    <Paper
-      style={{
-        paddingTop: 20,
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingBottom: 20,
-      }}
-    >
-      <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-        <FormLabel component="legend">Select forms to drop</FormLabel>
-        <FormGroup>
-          {forms.map((form) => {return <FormCheckBox name={form} />})}
-        </FormGroup>
-      </FormControl>
-      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
-    </Paper>
+    <div>
+      <Paper
+        style={{
+          paddingTop: 20,
+          paddingLeft: 30,
+          paddingRight: 30,
+          paddingBottom: 20,
+        }}
+      >
+        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+          <FormLabel component="legend">Select forms to drop</FormLabel>
+          <FormGroup style={{paddingTop: 10}}>
+            {
+              forms.map((form) => {
+                return <FormCheckBox name={form} status={formState[form]} />
+              })
+            }
+          </FormGroup>
+        </FormControl>
+      </Paper>
+      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained" type='submit' onClick={handleSubmit}>Submit</Button>
+    </div>
   )
 }
 
