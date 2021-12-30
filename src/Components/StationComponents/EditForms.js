@@ -16,6 +16,13 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Data from "./StationTestData.json";
+import ListItemText from "@material-ui/core/ListItemText";
+import { Link } from "react-router-dom";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+
+import Switch from "@material-ui/core/Switch";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -100,6 +107,46 @@ function AddFormTab() {
   )
 }
 
+function UpdateFormTab() {
+  const stations = [];
+
+  /** Reads station names and tags from json file */
+  const getStations = () => {
+    for (var i = 0; i < Data.length; i++) {
+      stations.push({
+        name: Data[i].stationName,
+        tag: Data[i].tag,
+        checked: false, // Availabilities unimportant here, set to false.
+      });
+    }
+  }
+
+  getStations();
+
+  return (
+    <Paper
+      style={{
+        paddingTop: 20,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 20,
+      }}
+    >
+        <List>
+          {stations.map((station, index) => (
+            <ul
+              key={index}
+              component={Link}
+              to={`/edit_forms/${station.tag}`}
+            >
+              <ListItemText id={station.name} primary={station.name} />
+            </ul>
+          ))}
+        </List>
+      </Paper>
+  )
+}
+
 function DropFormTab() {
   const forms = ["Registration", "BMI", "Doctor Consultation", "Familty History", "Oral Health"];
   // const formInit = {};
@@ -176,7 +223,7 @@ export default function BasicTabs() {
           <AddFormTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <UpdateFormTab />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <DropFormTab />
