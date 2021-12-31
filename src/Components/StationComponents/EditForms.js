@@ -1,23 +1,25 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import AddCircle from "@material-ui/icons/AddCircle";
-import RemoveCircle from "@material-ui/icons/RemoveCircle";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import Button from "@material-ui/core/Button";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import {
+  Tab,
+  Tabs,
+  Typography,
+  Box,
+  Paper,
+  TextField,
+  IconButton,
+  List,
+  Button,
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Checkbox,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
+import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import Data from "./StationTestData.json";
-import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 
 function TabPanel(props) {
@@ -139,9 +141,14 @@ function AddFormTab() {
 }
 
 function UpdateFormTab() {
-  const stations = [];
+  const registration = {
+    stationName: "Registration",
+    tag: "registration",
+    available: "false",
+  };
 
-  /** Reads station names and tags from json file */
+  /** Read station names and tags from json file */
+  const stations = [];
   const getStations = () => {
     for (var i = 0; i < Data.length; i++) {
       stations.push({
@@ -151,50 +158,33 @@ function UpdateFormTab() {
       });
     }
   };
-
-  const registration = {
-    stationName: "Registration",
-    tag: "registration",
-    available: "false",
-  };
-
   getStations();
 
-  var i;
+  var i; // For registration form index (used below)
 
   return (
     <Paper
       style={{
         paddingTop: 20,
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingBottom: 10,
+        paddingBottom: 2,
       }}
     >
-      <FormLabel component="legend">Click form to edit</FormLabel>
+      <FormLabel
+        style={{
+          paddingLeft: 30,
+        }}
+        component="legend"
+      >
+        Select form to update
+      </FormLabel>
       <List>
-        {stations.map(
-          (station, index) => (
-            (i = index),
-            (
-              <li
-                style={{
-                  paddingTop: 10,
-                }}
-                key={index}
-                component={Link}
-                to={`/edit_forms/stations`}
-              >
-                <ListItemText id={station.name} primary={station.name} />
-              </li>
-            )
-          )
-        )}
-        <li
+        <ListItem
           style={{
-            paddingTop: 10,
+            paddingTop: 4,
+            paddingLeft: 30,
           }}
           key={i + 1}
+          button
           component={Link}
           to={`/edit_forms/${registration.tag}`}
         >
@@ -202,7 +192,26 @@ function UpdateFormTab() {
             id={registration.stationName}
             primary={registration.stationName}
           />
-        </li>
+        </ListItem>
+        {stations.map(
+          (station, index) => (
+            (i = index),
+            (
+              <ListItem
+                style={{
+                  paddingTop: 4,
+                  paddingLeft: 30,
+                }}
+                key={index}
+                button
+                component={Link}
+                to={`/edit_forms/${station.tag}`}
+              >
+                <ListItemText id={station.name} primary={station.name} />
+              </ListItem>
+            )
+          )
+        )}
       </List>
     </Paper>
   );
