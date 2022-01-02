@@ -2,28 +2,10 @@ import React, { Component } from "react";
 import { Grid, Paper } from "@material-ui/core";
 //import FormSegment from "./FormSegment";
 import InfoSegment from "./InfoSegment";
-import BMI from "./StationForms/BMI";
-import EyeScreening from "./StationForms/EyeScreening";
-import FingerstickAnemia from "./StationForms/FingerstickAnemia";
-import Fingerstick from "./StationForms/Fingerstick";
-import BloodPressure from "./StationForms/BloodPressure";
-import Doctor from "./StationForms/DoctorConsult";
-import Phlebotomy from "./StationForms/Phlebotomy";
-import OralHealth from "./StationForms/OralHealth";
+import GeneralForm from "./StationForms/GeneralForm";
 
 class FormAbled extends Component {
   state = {};
-
-  forms = {
-    oralHealth: OralHealth,
-    bmi: BMI,
-    eyeScreening: EyeScreening,
-    phlebotomy: Phlebotomy,
-    fingerstickAnemia: FingerstickAnemia,
-    doctorConsult: Doctor,
-    fingerstickRCBG: Fingerstick,
-    bloodPressure: BloodPressure,
-  };
 
   handleChange(e) {
     this.props.onChange();
@@ -31,7 +13,6 @@ class FormAbled extends Component {
 
   render() {
     const { stationName } = this.props;
-    const StationTag = this.forms[stationName || OralHealth];
     return (
       <div>
         <Grid container spacing={2}>
@@ -44,10 +25,11 @@ class FormAbled extends Component {
                 paddingBottom: 20,
               }}
             >
-              <StationTag
+              <GeneralForm
                 id={this.props.id}
                 onChange={this.handleChange.bind(this)}
                 state={this.props.state}
+                stationName={stationName}
               />
             </Paper>
           </Grid>

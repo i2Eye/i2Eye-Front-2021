@@ -34,12 +34,13 @@ const getTestQuestions = () => {
                 required: true
             },
         ],
-       "bloodpressure" : [
+       "bloodPressure" : [
             {
                 questionNum: 1,
                 question: "Is patient > 18 years old?",
                 type: "radio",
-                required: true
+                required: true,
+                options: ["Yes", "No"]
             },
             {
                 questionNum: 2,
@@ -109,7 +110,7 @@ const getTestQuestions = () => {
             options: ["Never", "1-2 times a month", "1-3 times weekly", "4-5 times weekly", "Once a day", "More than once daily"]
         },
    ],
-   "BMI" : [
+   "bmi" : [
        {
            questionNum: 1,
            question: "Height (m)",
@@ -128,7 +129,119 @@ const getTestQuestions = () => {
            type: "text",
            required: true
        }
-   ]    
+   ],
+   "oralHealth": [
+       { 
+           questionNum: 1,
+           question: "Dental ID", 
+           type: "text",
+           required: true
+        },
+        { 
+            questionNum: 2,
+            question: "Have you ever consumed in the past/present any form of intoxications e.g. tobacco beedit, cigarettes (include chewing/smoking)?", 
+            type: "radio",
+            required: true,
+            options: ["Yes", "No"]
+         },
+         { 
+            questionNum: 3,
+            question: "If Y to having consumed, what do you consume?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 4,
+            question: "If Y to having consumed, how many pieces/sticks on average do you consume a day?", 
+            type: "radio",
+            required: false,
+            options: ["<1 a day", "1-10 a day", ">10 a day"]
+         },
+         { 
+            questionNum: 5,
+            question: "If Y to having consumed, for how long have you been consuming?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 6,
+            question: "If Y to having consumed, why do you still consume?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 7,
+            question: "Are you still consuming?", 
+            type: "radio",
+            required: false,
+            options: ["Yes", "No"]
+         },
+         { 
+            questionNum: 8,
+            question: "If N to consuming now, when did you stop consuming?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 9,
+            question: "If N to consuming now, why did you choose to stop?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 10,
+            question: "If Y to consuming now, have you tried quitting?", 
+            type: "radio",
+            required: false,
+            options: ["Yes", "No"]
+         },
+         { 
+            questionNum: 11,
+            question: "If Y, for how long?", 
+            type: "text",
+            required: false
+         },
+         { 
+            questionNum: 12,
+            question: "If Y to having tried quitting, what made you consume again?", 
+            type: "text",
+            required: false
+         },
+   ],
+   "phlebotomy": [
+        {
+           questionNum: 1,
+           question: "Are you 40 years old or above?",
+           type: "radio",
+           required: true,
+           options: ["Yes", "No"],
+           helper: "If Yes, proceed with test. If No, check the following conditions.",
+        },
+        {
+            questionNum: 3,
+            question: "Vimta Registration No.",
+            type: "text",
+            required: false,
+            helper: "Indicate NIL if did not fulfil any of the criteria for test.",
+         },
+         //add in checkbox question
+   ],
+   "fingerstickRCBG" : [
+       { 
+           questionNum: 1,
+           question: "Is patient > 18 years old?", 
+           type: "radio",
+           required: true,
+           options: ["Yes", "No"],
+           helper: "If Yes, proceed. If No, skip RCBG station."
+        },
+        { 
+            questionNum: 2,
+            question: "Random capillary blood glucose (mg/dL)", 
+            type: "text",
+            required: false
+     },
+   ]
     }
 }
 

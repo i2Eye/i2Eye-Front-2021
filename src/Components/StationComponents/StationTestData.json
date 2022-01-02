@@ -4,7 +4,7 @@
         "tag": "oralHealth", 
         "available": "true" 
     }, { 
-        "stationName": "BMI and Abdominal Obesity", 
+        "stationName": "BMI", 
         "tag": "bmi", 
         "available": "true" 
     }, { 
@@ -16,19 +16,19 @@
         "tag": "phlebotomy", 
         "available": "true" 
     }, { 
-        "stationName": "Fingerstick Blood Test", 
+        "stationName": "Fingerstick Blood Test (Anemia)", 
         "tag": "fingerstickAnemia", 
         "available": "true" 
     }, { 
-        "stationName": "Doctor Consult", 
+        "stationName": "Doctor's Consult", 
         "tag": "doctorConsult", 
         "available": "true" 
     }, { 
-        "stationName": "Fingerstick Test (RCBG)", 
+        "stationName": "Fingerstick Blood Test (RCBG)", 
         "tag": "fingerstickRCBG", 
         "available": "true" 
     }, { 
-        "stationName": "Blood Pressure Test", 
+        "stationName": "Blood Pressure", 
         "tag": "bloodPressure", 
         "available": "true" 
     }
