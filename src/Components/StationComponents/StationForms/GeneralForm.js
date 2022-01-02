@@ -1,55 +1,60 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
-import Button from "@material-ui/core/Button";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import getTestData from "../../../TestData";
+import Button from "@material-ui/core/Button";
 import getTestQuestions from "../../../TestQuestions"
 import "../../../dbFunctions";
 import { updatePatientData, getPatient } from "../../../dbFunctions";
-import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from '@material-ui/core';
-import Success from "./Success";
 import ErrorSnackbar from "./ErrorSnackbar";
-
-const questions = [{ question: "SNC ID" }];
+import stations from "../StationTestData.json";
 
 var data;
+var stationName;
+var stationTag;
 
-class EyeScreening extends Component {
+class GeneralForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorPresent : false
+      errorPresent : false,
     };
-    data = getTestQuestions().eyeScreening;
+    
+
+    stationTag = this.props.stationName;
+    stationName = stations.filter(x => x.tag === stationTag)[0].stationName;
+    data = getTestQuestions()[stationTag];
     for (let i = 0; i < data.length; i++) {
       this.state[data[i].question] = "";
     }
+  
   }
 
   async componentDidMount() {
     const data = getPatient(this.props.id).then((response) => {
-      const res = response["Eye Screening"];
+      const res = response[stationName];
       for (let i = 0; i < res.length; i++) {
         this.setState({[res[i].question]: res[i].answers})
       }
     });
   }
 
-  handleChange(e) {
-    this.setState({ [e.target.label]: e.target.value });
-  }
-
   handleRadioChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  handleChange(e) {
+    this.setState({ [e.target.id]: e.target.value });
+  }
+
+
+
   handleSubmit() {
-    const answers = {"Eye Screening": []};
+    const answers = { [stationName] : []};
   
     for (let i = 0; i < data.length; i++) {
       if (data[i].required) {
@@ -64,19 +69,21 @@ class EyeScreening extends Component {
                   question: data[i].question,
                 }
 
-            answers["Eye Screening"].push(result);
+            answers[stationName].push(result);
 
       }
-
-      updatePatientData(this.props.id, answers).then((response) =>
-        this.setState({ errorPresent: false }, () => {
-          if (response === false) {
-            this.setState({ errorPresent: true });
-          } else {
-            this.props.onChange();
-          }
-        })
-      );
+     
+        updatePatientData(this.props.id, answers).then((response) =>
+            this.setState({ errorPresent: false }, () => {
+              if (response === false) {
+                this.setState({ errorPresent: true });
+              } else {
+                this.props.onChange();
+              }
+            })
+          );
+        
+        
   }
 
   renderOptions(item) {
@@ -88,7 +95,6 @@ class EyeScreening extends Component {
   />
   }
 
-  
   render() {
     return (
       <div>
@@ -98,47 +104,45 @@ class EyeScreening extends Component {
           />
         )}
         <h1 style={{ fontFamily: "sans-serif", fontSize: 30 }}>
-          Eye Screening
+          {stationName}
         </h1>
         <form>
           <ol>
             {data.map((question) => {
               if (question.type === "text") {
-                return (
-              <div key={question.question}>
-                <li
-                  style={{
-                    fontFamily: "sans-serif",
-                    fontSize: 22,
-                    fontWeight: "normal",
-                  }}
-                >
-                  <span>
-                    <InputLabel
-                      style={{ fontSize: 22, color: "black" }}
-                      required={question.required}
-                    >
-                      {question.question}
-                    </InputLabel>
-                    <TextField
-                      key={question.question}
-                      onChange={this.handleChange.bind(this)}
-                      name="search"
-                      type="text"
-                      label={question.question}
-                      value={this.state[question.question]}
-                    />
-                    <p />
-                  </span>
-                </li>
-              </div>)
+                return (<div key={question.question}>
+                  <li
+                    style={{
+                      marginBottom: 20,
+                      fontFamily: "sans-serif",
+                      fontSize: 22,
+                      fontWeight: "normal",
+                    }}
+                  >
+                    <span>
+                      <InputLabel
+                        style={{ fontSize: 22, color: "black" }}
+                        required = {question.required}
+                      >
+                        {question.question}
+                      </InputLabel>
+                      <TextField
+                        id={question.question}
+                        onChange={this.handleChange.bind(this)}
+                        value={this.state[question.question]}
+                      />
+                    </span>
+                  </li>
+                </div>
+                  )
               }
-
+              
               if (question.type === "radio") {
                 return (
               <div key={question.question}>
                 <li
                   style={{
+                    marginBottom: 20,
                     fontFamily: "sans-serif",
                     fontSize: 22,
                     fontWeight: "normal",
@@ -165,8 +169,8 @@ class EyeScreening extends Component {
                 </li>
               </div>
             )}})}
-
             <Button
+              style={{marginTop: 10}}
               size="large"
               color="primary"
               variant="contained"
@@ -181,4 +185,4 @@ class EyeScreening extends Component {
   }
 }
 
-export default EyeScreening;
+export default GeneralForm;

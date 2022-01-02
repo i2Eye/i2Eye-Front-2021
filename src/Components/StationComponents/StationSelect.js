@@ -8,6 +8,7 @@ import Switch from "@material-ui/core/Switch";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
+import Data from "./StationTestData.json";
 
 const useStyles = (theme) => ({
   root: {
@@ -17,24 +18,20 @@ const useStyles = (theme) => ({
   },
 });
 
+function readJsonData() {
+  var stationsArray = [];
+
+  for (var i = 0; i < Data.length; i++) {
+    var isAvailable = (Data[i].available.toLowerCase() === "true");
+    stationsArray.push({ name: Data[i].stationName, tag: Data[i].tag, checked: isAvailable });
+  }
+
+  return stationsArray;
+}
+
 class StationSelect extends Component {
   state = {
-    stations: [
-      { name: "Oral Health", checked: true },
-      {
-        name: "BMI and Abdominal Obesity", checked: true,
-      },
-      { name: "Eye Screening", checked: true },
-      { name: "Phlebotomy Test", checked: true },
-      {
-        name: "Fingerstick Blood Test", checked: true,
-      },
-      { name: "Doctor Consult", checked: true },
-      {
-        name: "Fingerstick Test (RCBG)", checked: true,
-      },
-      { name: "Blood Pressure Test", checked: true },
-    ],
+    stations: readJsonData(),
   };
 
   /* Takes in an index to find which station to handle. The event prop is automatically passed in through onChange and the state is updated */
