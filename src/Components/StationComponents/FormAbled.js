@@ -14,16 +14,14 @@ import OralHealth from "./StationForms/OralHealth";
 class FormAbled extends Component {
   state = {};
 
-  forms = {
-    oralHealth: OralHealth,
-    bmi: BMI,
-    eyeScreening: EyeScreening,
-    phlebotomy: Phlebotomy,
-    fingerstickAnemia: FingerstickAnemia,
-    doctorConsult: Doctor,
-    fingerstickRCBG: Fingerstick,
-    bloodPressure: BloodPressure,
-  };
+  forms = { "Oral Health": OralHealth,
+            "BMI and Abdominal Obesity": BMI,
+            "Eye Screening": EyeScreening,
+            "Phlebotomy Test": Phlebotomy,
+            "Fingerstick Blood Test": FingerstickAnemia,
+            "Doctor Consult": Doctor,
+            "Fingerstick Test (RCBG)": Fingerstick,
+            "Blood Pressure Test": BloodPressure};
 
   handleChange(e) {
     this.props.onChange();

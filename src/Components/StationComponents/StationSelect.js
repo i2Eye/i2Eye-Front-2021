@@ -20,26 +20,20 @@ const useStyles = (theme) => ({
 class StationSelect extends Component {
   state = {
     stations: [
-      { name: "Oral Health", tag: "oralHealth", checked: true },
+      { name: "Oral Health", checked: true },
       {
-        name: "BMI and Abdominal Obesity",
-        tag: "bmi",
-        checked: true,
+        name: "BMI and Abdominal Obesity", checked: true,
       },
-      { name: "Eye Screening", tag: "eyeScreening", checked: true },
-      { name: "Phlebotomy Test", tag: "phlebotomy", checked: true },
+      { name: "Eye Screening", checked: true },
+      { name: "Phlebotomy Test", checked: true },
       {
-        name: "Fingerstick Blood Test",
-        tag: "fingerstickAnemia",
-        checked: true,
+        name: "Fingerstick Blood Test", checked: true,
       },
-      { name: "Doctor Consult", tag: "doctorConsult", checked: true },
+      { name: "Doctor Consult", checked: true },
       {
-        name: "Fingerstick Test (RCBG)",
-        tag: "fingerstickRCBG",
-        checked: true,
+        name: "Fingerstick Test (RCBG)", checked: true,
       },
-      { name: "Blood Pressure Test", tag: "bloodPressure", checked: true },
+      { name: "Blood Pressure Test", checked: true },
     ],
   };
 
@@ -66,7 +60,7 @@ class StationSelect extends Component {
               button
               disabled={!station.checked} //handles the check if the station is off
               component={Link}
-              to={`/stations/patient_search/${station.tag}`}
+              to={`/stations/patient_search/${encodeURIComponent(station.name)}`}
             >
               <ListItemText id={station.name} primary={station.name} />
               <ListItemSecondaryAction>

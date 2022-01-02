@@ -120,16 +120,16 @@ class PatientSearch extends Component {
 
   getStationName = (stationTag) => {
     const stations = [
-      { name: "Oral Health", tag: "oralHealth" },
-      { name: "BMI and Abdominal Obesity", tag: "bmi" },
-      { name: "Eye Screening", tag: "eyeScreening" },
-      { name: "Phlebotomy Test", tag: "phlebotomy" },
-      { name: "Fingerstick Blood Test", tag: "fingerstickAnemia" },
-      { name: "Doctor Consult", tag: "doctorConsult" },
-      { name: "Fingerstick Test (RCBG)", tag: "fingerstickRCBG" },
-      { name: "Blood Pressure Test", tag: "bloodPressure" },
+      { name: "Oral Health" },
+      { name: "BMI and Abdominal Obesity" },
+      { name: "Eye Screening" },
+      { name: "Phlebotomy Test" },
+      { name: "Fingerstick Blood Test" },
+      { name: "Doctor Consult" },
+      { name: "Fingerstick Test (RCBG)" },
+      { name: "Blood Pressure Test" },
     ];
-    return stations.find((station) => station.tag === stationTag).name;
+    return stations.find((station) => station.name === stationTag).name;
   };
 
   componentDidMount() {
