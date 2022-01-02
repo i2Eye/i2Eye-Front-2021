@@ -945,7 +945,7 @@ def insert_stuff_test():
 def insert_stations():
     insert_station("Registration")
     insert_station("Oral Health")
-    insert_station("BMI")
+    insert_station("BMI and Abdominal Obesity")
     insert_station("Eye Screening")
     insert_station("Phlebotomy Test")
     insert_station("Fingerstick Blood Test (Anemia)")
