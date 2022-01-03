@@ -392,7 +392,7 @@ class Screening extends Component {
         },
         {
           label: "BMI & Abdominal Obesity",
-          station: "BMI",
+          station: "BMI and Abdominal Obesity",
           name: "bmi",
         },
         {

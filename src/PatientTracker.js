@@ -384,9 +384,9 @@ class PatientTracker extends Component {
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
-                      <InputLabel id="BMI">BMI</InputLabel>
+                      <InputLabel id="BMI">BMI and Abdominal Obesity</InputLabel>
                       <Select
-                        name="BMI"
+                        name="BMI and Abdominal Obesity"
                         id="BMI"
                         labelId="BMI"
                         onChange={(e) => {patientData["BMI"] = e.target.value}}
@@ -538,7 +538,7 @@ class PatientTracker extends Component {
     }
     updatePatientData(patient.id, {"Registration": data})
 
-    const stations = ["Registratoin", "BMI", "Oral Health", "Phlebotomy Test", "Eye Screening", "Fingerstick Blood Test (Anemia)", 
+    const stations = ["Registratoin", "BMI and Abdominal Obesity", "Oral Health", "Phlebotomy Test", "Eye Screening", "Fingerstick Blood Test (Anemia)", 
                       "Fingerstick Blood Test (RCBG)", "Blood Pressure", "Doctor's Consult"]
     const station_completion = {}
     for (const field in patient) {
@@ -600,7 +600,7 @@ class PatientTracker extends Component {
           "Age": person["Age"],
           "Gender": person["Gender"],
           "Oral Health": person["Oral Health"],
-          "BMI": person["BMI"],
+          "BMI and Abdominal Obesity": person["BMI and Abdominal Obesity"],
           "Eye Screening": person["Eye Screening"],
           "Phlebotomy Test": person["Phlebotomy Test"],
           "Fingerstick Blood Test (Anemia)": person["Fingerstick Blood Test (Anemia)"],
@@ -648,7 +648,7 @@ class PatientTracker extends Component {
         if (hasIncompleteStations) {
           incomplete =
             person["Oral Health"] === "In Queue" ||
-            person.BMI === "In Queue" ||
+            person["BMI and Abdominal Obesity"] === "In Queue" ||
             person["Eye Screening"] === "In Queue" ||
             person["Phlebotomy Test"] === "In Queue" ||
             person["Fingerstick Blood Test (Anemia)"] === "In Queue" ||
@@ -659,7 +659,7 @@ class PatientTracker extends Component {
         if (completedAllStations) {
           complete =
           person["Oral Health"] !== "In Queue" &&
-          person.BMI !== "In Queue" &&
+          person["BMI and Abdominal Obesity"] !== "In Queue" &&
           person["Eye Screening"] !== "In Queue" &&
           person["Phlebotomy Test"] !== "In Queue" &&
           person["Fingerstick Blood Test (Anemia)"] !== "In Queue" &&
@@ -733,8 +733,8 @@ class PatientTracker extends Component {
       },
       {
         width: 150,
-        label: "BMI",
-        dataKey: "BMI",
+        label: "BMI and Abdominal Obesity",
+        dataKey: "BMI and Abdominal Obesity",
       },
       {
         width: 150,

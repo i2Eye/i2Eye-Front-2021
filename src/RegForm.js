@@ -226,7 +226,7 @@ export const RegForm = (props) => {
       "Registration": "Completed",
       "Phlebotomy Test": values.station1 ? "In Queue" : "Not Queued",
       "Blood Pressure": values.station2 ? "In Queue" : "Not Queued",
-      "BMI": values.station3 ? "In Queue" : "Not Queued",
+      "BMI and Abdominal Obesity": values.station3 ? "In Queue" : "Not Queued",
       "Oral Health": values.station4 ? "In Queue" : "Not Queued",
       "Fingerstick Blood Test (Anemia)": values.station5 ? "In Queue" : "Not Queued",
       "Fingerstick Blood Test (RCBG)": values.station6 ? "In Queue" : "Not Queued",

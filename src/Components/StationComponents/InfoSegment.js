@@ -47,6 +47,7 @@ class InfoSegment extends Component {
 
   async componentDidMount() {
     const data = getPatient(this.props.id).then((response) => {
+      console.log(response)
       this.setState({
         name: response.Registration[0].answers,
         nric: response.Registration[1].answers,

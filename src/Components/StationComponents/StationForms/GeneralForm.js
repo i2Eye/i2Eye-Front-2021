@@ -15,7 +15,6 @@ import stations from "../StationTestData.json";
 
 var data;
 var stationName;
-var stationTag;
 
 class GeneralForm extends Component {
   constructor(props) {
@@ -23,15 +22,13 @@ class GeneralForm extends Component {
     this.state = {
       errorPresent : false,
     };
-    
 
-    stationTag = this.props.stationName;
-    stationName = stations.filter(x => x.tag === stationTag)[0].stationName;
-    data = getTestQuestions()[stationTag];
+    stationName = this.props.stationName
+    
+    data = getTestQuestions()[stationName];
     for (let i = 0; i < data.length; i++) {
       this.state[data[i].question] = "";
     }
-  
   }
 
   async componentDidMount() {

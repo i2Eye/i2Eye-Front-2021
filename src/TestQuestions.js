@@ -1,6 +1,6 @@
 const getTestQuestions = () => {
     return {
-        "eyeScreening" : [
+        "Eye Screening" : [
             {
                 questionNum: 1,
                 question: "SNC ID",
@@ -8,7 +8,7 @@ const getTestQuestions = () => {
                 required: true
             }
         ],
-        "doctorConsult" : [
+        "Doctor's Consult" : [
             {
                 questionNum: 1,
                 question: "Urgent doctor's consult: Reason for consultation/chief complaint",
@@ -34,7 +34,7 @@ const getTestQuestions = () => {
                 required: true
             },
         ],
-       "bloodPressure" : [
+        "Blood Pressure" : [
             {
                 questionNum: 1,
                 question: "Is patient > 18 years old?",
@@ -68,7 +68,7 @@ const getTestQuestions = () => {
             },
 
        ],
-       "fingerstickAnemia" : [
+       "Fingerstick Blood Test (Anemia)" : [
         {
             questionNum: 1,
             question: "Hb level (g/dL)",
@@ -110,7 +110,7 @@ const getTestQuestions = () => {
             options: ["Never", "1-2 times a month", "1-3 times weekly", "4-5 times weekly", "Once a day", "More than once daily"]
         },
    ],
-   "bmi" : [
+   "BMI and Abdominal Obesity" : [
        {
            questionNum: 1,
            question: "Height (m)",
@@ -130,7 +130,7 @@ const getTestQuestions = () => {
            required: true
        }
    ],
-   "oralHealth": [
+   "Oral Health": [
        { 
            questionNum: 1,
            question: "Dental ID", 
@@ -208,7 +208,7 @@ const getTestQuestions = () => {
             required: false
          },
    ],
-   "phlebotomy": [
+   "Phlebotomy Test": [
         {
            questionNum: 1,
            question: "Are you 40 years old or above?",
@@ -226,7 +226,7 @@ const getTestQuestions = () => {
          },
          //add in checkbox question
    ],
-   "fingerstickRCBG" : [
+   "Fingerstick Blood Test (RCBG)" : [
        { 
            questionNum: 1,
            question: "Is patient > 18 years old?", 
