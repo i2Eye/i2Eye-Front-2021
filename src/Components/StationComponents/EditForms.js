@@ -89,6 +89,7 @@ function AddFormTab() {
             id="outlined-basic"
             label="Question"
             variant="outlined"
+            defaultValue={props.question}
             onChange={handleTextChange(props.index)}
           />
           
@@ -296,31 +297,31 @@ function DropFormTab() {
 }
 
 function BasicSelect() {
-  const [type, setType] = React.useState("text");
+  const [type, setType] = React.useState();
 
   const handleChange = (event) => {
     setType(event.target.value);
   };
 
-  const [questions, setQuestions] = React.useState([""]);
+  const [options, setOptions] = React.useState([""]);
 
-  const handleTextChange = (qnIndex) => {
+  const handleTextChange = (opIndex) => {
     return (e) => {
-      let current = questions;
-      current[qnIndex] = e.target.value;
-      setQuestions(current);
+      let current = options;
+      current[opIndex] = e.target.value;
+      setOptions(current);
     };
   };
 
-  const addQuestion = () =>
-    setQuestions((prev) => {
+  const addOption = () =>
+    setOptions((prev) => {
       prev.forEach((str) => console.log(str));
       return [...prev, ""];
     });
-  const removeQuestion = (qnIndex) => () =>
-    setQuestions((prev) => {
+  const removeOption = (opIndex) => () =>
+    setOptions((prev) => {
       prev.forEach((str) => console.log(str));
-      return prev.filter((qn, index) => index !== qnIndex);
+      return prev.filter((qn, index) => index !== opIndex);
     });
 
   function InputField(props) {
@@ -334,15 +335,16 @@ function BasicSelect() {
             id="outlined-basic"
             label="Option"
             variant="outlined"
+            defaultValue={props.option}
             onChange={handleTextChange(props.index)}
           />
           
-          <IconButton onClick={addQuestion}>
+          <IconButton onClick={addOption}>
             <AddCircle />
           </IconButton>
           <IconButton
-            onClick={removeQuestion(props.index)}
-            disabled={questions.length === 1}
+            onClick={removeOption(props.index)}
+            disabled={options.length === 1}
           >
             <RemoveCircle />
           </IconButton>
@@ -368,11 +370,11 @@ function BasicSelect() {
           <MenuItem value="checkbox">Checkbox</MenuItem>
         </Select>
       </FormControl>
-      {type ==="radio" && questions.map((question, index) => {
-          return <InputField question={question} index={index} />;
+      {type ==="radio" && options.map((option, index) => {
+          return <InputField option={option} index={index} />;
         })}
-      {type==="checkbox" && questions.map((question, index) => {
-          return <InputField question={question} index={index} />;
+      {type==="checkbox" && options.map((option, index) => {
+          return <InputField option={option} index={index} />;
         })}
     </Box>
   );
