@@ -1,21 +1,29 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField';
-import AddCircle from '@material-ui/icons/AddCircle';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
-import IconButton from '@material-ui/core/IconButton';
-import List from "@material-ui/core/List";
-import Button from '@material-ui/core/Button';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import * as React from "react";
+import PropTypes from "prop-types";
+import {
+  Tab,
+  Tabs,
+  Typography,
+  Box,
+  Paper,
+  TextField,
+  IconButton,
+  List,
+  Button,
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Checkbox,
+  ListItem,
+  ListItemText,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
+import { AddCircle, RemoveCircle } from "@material-ui/icons";
+import Data from "./StationTestData.json";
+import { Link } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,11 +60,10 @@ function a11yProps(index) {
 
 function AddFormTab() {
   const [key, setKey] = React.useState(1);
-  const [questions, setQuestions] = React.useState([{question: "", key: 0}]);
+  const [questions, setQuestions] = React.useState([{question: "", type: "text", key: 0}]);
 
-  const handleTextChange = (qnIndex) => {
+  const handleQuestionChange = (qnIndex) => {
     return (e) => {
-      // questions[qnIndex].question = e.target.value;
       e.persist();
       setQuestions((prev) => {
         const updated = prev.slice();
@@ -68,18 +75,55 @@ function AddFormTab() {
     };
   }
 
+  const handleOptionChange = (qnIndex, opIndex) => {
+    return (e) => {
+      e.persist();
+      setQuestions((prev) => {
+        const updated = prev.slice();
+        updated[qnIndex].options[opIndex].option = e.target.value;
+        return updated;
+      })
+    }
+  }
+
+  const handleTypeChange = (qnIndex) => {
+    return (e) => {
+      setQuestions((prev) => {
+        const newType = e.target.value;
+        const updated = prev.slice();
+        updated[qnIndex].type = newType;
+        if (newType !== "text") {
+          updated[qnIndex].options = [{option: ""}];
+        }
+        return updated;
+      })
+    }
+  }
+
   const addQuestion = () => {
-    setQuestions((prev)=>{
-      // prev.forEach((str) => console.log(str));
-      console.log(key);
-      return [...prev, {question: "", key: key}];
-    })
+    setQuestions((prev) => [...prev, {question: "", type: "text", key: key}]);
     setKey(key + 1);
   };
   const removeQuestion = (qnIndex) => () => setQuestions((prev)=> {
     prev.forEach((str) => console.log(str));
-    return prev.filter((qn, index) => index !== qnIndex)
+    const updated = prev.slice();
+    updated.splice(qnIndex, 1);
+    return updated;
   });
+
+  // for radio and checkbox types
+  const addOption = (qnIndex) => () => setQuestions((prev) => {
+      const updated = prev.slice();
+      updated[qnIndex].options.push({option: ""});
+      return updated;
+    }
+  );
+  const removeOption = (qnIndex, opIndex) => () =>setQuestions((prev) => {
+      const updated = prev.slice();
+      updated[qnIndex].options.splice(opIndex, 1);
+      return updated;
+    }
+  );
 
   return (
     <Paper
@@ -94,13 +138,32 @@ function AddFormTab() {
         <ul style={{marginBottom: 10}}>
           <TextField required id="outlined-basic" label="Form Name" variant="outlined" /><br></br>
         </ul>
-        {questions.map((question, index) => (
+        {questions.map((question, qnIndex) => (
           <ul key={question.key}>
             <div>
-              <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" value={question.question} onChange={handleTextChange(index)} />
+              <TextField size="small" style ={{width: '80%', marginTop:'10px'}} required id="outlined-basic" label="Question" variant="outlined" value={question.question} onChange={handleQuestionChange(qnIndex)} />
               <IconButton onClick={addQuestion}><AddCircle /></IconButton>
-              <IconButton onClick={removeQuestion(index)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
+              <IconButton onClick={removeQuestion(qnIndex)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
             </div>
+            <FormControl  sx={{ m: 1, minWidth: 80 }}>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={question.type}
+                onChange={handleTypeChange(qnIndex)}
+                autoWidth
+              >
+                <MenuItem value="text">Text</MenuItem>
+                <MenuItem value="radio">Radio</MenuItem>
+                <MenuItem value="checkbox">Checkbox</MenuItem>
+              </Select>
+            </FormControl>
+            <List>
+              {(question.type ==="radio" || question.type === "checkbox") && question.options.map((optionHolder, opIndex) => {
+                return <OptionsField option={optionHolder.option} index={opIndex} handleTextChange={handleOptionChange(qnIndex, opIndex)} disabled={question.options.length === 1} addOption={addOption(qnIndex)} removeOption={removeOption(qnIndex, opIndex)} />;
+              })}
+            </List>
           </ul>
         ))}
       </List>
@@ -108,6 +171,114 @@ function AddFormTab() {
     </Paper>
   )
 }
+
+function OptionsField(props) {
+  return (
+    <ul>
+      <div>
+        <TextField
+          size="small"
+          style={{ width: "50%", marginTop: "10px" }}
+          required
+          id={props.index}
+          label="Option"
+          variant="outlined"
+          defaultValue={props.option}
+          value={props.option}
+          onChange={props.handleTextChange}
+        />
+        
+        <IconButton onClick={props.addOption}>
+          <AddCircle />
+        </IconButton>
+        <IconButton
+          onClick={props.removeOption}
+          disabled={props.disabled}
+        >
+          <RemoveCircle />
+        </IconButton>
+      </div>
+    </ul>
+  );
+}
+
+function UpdateFormTab() {
+  const registration = {
+    stationName: "Registration",
+    tag: "registration",
+    available: "false",
+  };
+
+  /** Read station names and tags from json file */
+  const stations = [];
+  const getStations = () => {
+    for (var i = 0; i < Data.length; i++) {
+      stations.push({
+        name: Data[i].stationName,
+        tag: Data[i].tag,
+        checked: false, // Availabilities unimportant here, set to false.
+      });
+    }
+  };
+  getStations();
+
+  var i; // For registration form index (used below)
+
+  return (
+    <Paper
+      style={{
+        paddingTop: 20,
+        paddingBottom: 2,
+      }}
+    >
+      <FormLabel
+        style={{
+          paddingLeft: 30,
+        }}
+        component="legend"
+      >
+        Select form to update
+      </FormLabel>
+      <List>
+        <ListItem
+          style={{
+            paddingTop: 4,
+            paddingLeft: 30,
+          }}
+          key={i + 1}
+          button
+          component={Link}
+          to={`/edit_forms/${registration.tag}`}
+        >
+          <ListItemText
+            id={registration.stationName}
+            primary={registration.stationName}
+          />
+        </ListItem>
+        {stations.map(
+          (station, index) => (
+            (i = index),
+            (
+              <ListItem
+                style={{
+                  paddingTop: 4,
+                  paddingLeft: 30,
+                }}
+                key={index}
+                button
+                component={Link}
+                to={`/edit_forms/${station.tag}`}
+              >
+                <ListItemText id={station.name} primary={station.name} />
+              </ListItem>
+            )
+          )
+        )}
+      </List>
+    </Paper>
+  );
+}
+
 
 function DropFormTab() {
   const forms = ["Registration", "BMI", "Doctor Consultation", "Familty History", "Oral Health"];
@@ -124,25 +295,14 @@ function DropFormTab() {
     });
   };
 
-  function FormCheckBox(props) {
-    return (
-      <FormControlLabel 
-        control={
-          <Checkbox onChange={handleChange} name={props.name} checked={props.status}/>
-        }
-        label={props.name}
-      />
-    )
-  }
-
-  function handleSubmit() {
+  const handleSubmit = () => {
     forms.forEach((form) => {
       if (formState[form]) {
         formsToDelete.push(form);
       }
     });
     formsToDelete.forEach((del) => console.log(del));
-  }
+  };
 
   return (
     <div>
@@ -158,8 +318,8 @@ function DropFormTab() {
           <FormLabel component="legend">Select forms to drop</FormLabel>
           <FormGroup style={{paddingTop: 10}}>
             {
-              forms.map((form) => {
-                return <FormCheckBox name={form} status={formState[form]} />
+              forms.map((form, index) => {
+                return <FormCheckBox key={index} name={form} status={formState[form]} handleChange={handleChange} />
               })
             }
           </FormGroup>
@@ -167,6 +327,17 @@ function DropFormTab() {
       </Paper>
       <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained" type='submit' onClick={handleSubmit}>Submit</Button>
     </div>
+  )
+}
+
+function FormCheckBox(props) {
+  return (
+    <FormControlLabel 
+      control={
+        <Checkbox onChange={props.handleChange} name={props.name} checked={props.status}/>
+      }
+      label={props.name}
+    />
   )
 }
 
