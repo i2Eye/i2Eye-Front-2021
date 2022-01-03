@@ -79,37 +79,6 @@ function AddFormTab() {
       return prev.filter((qn, index) => index !== qnIndex);
     });
 
-  function InputField(props) {
-    return (
-      <ul>
-        <div>
-          <TextField
-            size="small"
-            style={{ width: "50%", marginTop: "10px" }}
-            required
-            id="outlined-basic"
-            label="Question"
-            variant="outlined"
-            defaultValue={props.question}
-            onChange={handleTextChange(props.index)}
-          />
-          {console.log(props.value)}
-          
-          <IconButton onClick={addQuestion}>
-            <AddCircle />
-          </IconButton>
-          <IconButton
-            onClick={removeQuestion(props.index)}
-            disabled={questions.length === 1}
-          >
-            <RemoveCircle />
-          </IconButton>
-          <BasicSelect />
-        </div>
-      </ul>
-    );
-  }
-
   return (
     <Paper
       style={{
@@ -131,7 +100,7 @@ function AddFormTab() {
           <br></br>
         </ul>
         {questions.map((question, index) => {
-          return <InputField question={question} index={index} />;
+          return <InputField question={question} index={index} addQuestion={addQuestion} removeQuestion={removeQuestion} handleTextChange={handleTextChange} disabled={questions.length === 1} />;
         })}
       </List>
       <Button
@@ -146,6 +115,37 @@ function AddFormTab() {
         Submit
       </Button>
     </Paper>
+  );
+}
+
+function InputField(props) {
+  return (
+    <ul>
+      <div>
+        <TextField
+          size="small"
+          style={{ width: "50%", marginTop: "10px" }}
+          required
+          id="outlined-basic"
+          label="Question"
+          variant="outlined"
+          defaultValue={props.question}
+          onChange={props.handleTextChange(props.index)}
+        />
+        {console.log(props.value)}
+        
+        <IconButton onClick={props.addQuestion}>
+          <AddCircle />
+        </IconButton>
+        <IconButton
+          onClick={props.removeQuestion(props.index)}
+          disabled={props.disabled}
+        >
+          <RemoveCircle />
+        </IconButton>
+        <BasicSelect />
+      </div>
+    </ul>
   );
 }
 
@@ -326,35 +326,6 @@ function BasicSelect() {
       return prev.filter((qn, index) => index !== opIndex);
     });
 
-  function InputField(props) {
-    return (
-      <ul>
-        <div>
-          <TextField
-            size="small"
-            style={{ width: "50%", marginTop: "10px" }}
-            required
-            id={props.index}
-            label="Option"
-            variant="outlined"
-            defaultValue={props.option}
-            onChange={handleTextChange(props.index)}
-          />
-          
-          <IconButton onClick={addOption}>
-            <AddCircle />
-          </IconButton>
-          <IconButton
-            onClick={removeOption(props.index)}
-            disabled={options.length === 1}
-          >
-            <RemoveCircle />
-          </IconButton>
-        </div>
-      </ul>
-    );
-  }
-
   return (
     <Box>
       <FormControl  sx={{ m: 1, minWidth: 80 }}>
@@ -373,12 +344,41 @@ function BasicSelect() {
         </Select>
       </FormControl>
       {type ==="radio" && options.map((option, index) => {
-          return <InputField option={option} index={index} />;
+          return <OptionsField option={option} index={index} handleTextChange={handleTextChange} disabled={options.length === 1} addOption={addOption} removeOption={removeOption} />;
         })}
       {type==="checkbox" && options.map((option, index) => {
-          return <InputField option={option} index={index} />;
+          return <OptionsField option={option} index={index} handleTextChange={handleTextChange} disabled={options.length === 1} addOption={addOption} removeOption={removeOption} />;
         })}
     </Box>
+  );
+}
+
+function OptionsField(props) {
+  return (
+    <ul>
+      <div>
+        <TextField
+          size="small"
+          style={{ width: "50%", marginTop: "10px" }}
+          required
+          id={props.index}
+          label="Option"
+          variant="outlined"
+          defaultValue={props.option}
+          onChange={props.handleTextChange(props.index)}
+        />
+        
+        <IconButton onClick={props.addOption}>
+          <AddCircle />
+        </IconButton>
+        <IconButton
+          onClick={props.removeOption(props.index)}
+          disabled={props.disabled}
+        >
+          <RemoveCircle />
+        </IconButton>
+      </div>
+    </ul>
   );
 }
 
