@@ -72,6 +72,7 @@ function AddFormTab() {
       prev.forEach((str) => console.log(str));
       return [...prev, ""];
     });
+
   const removeQuestion = (qnIndex) => () =>
     setQuestions((prev) => {
       prev.forEach((str) => console.log(str));
@@ -92,6 +93,7 @@ function AddFormTab() {
             defaultValue={props.question}
             onChange={handleTextChange(props.index)}
           />
+          {console.log(props.value)}
           
           <IconButton onClick={addQuestion}>
             <AddCircle />
@@ -277,7 +279,7 @@ function DropFormTab() {
         <FormLabel component="legend">Select forms to drop</FormLabel>
         <FormGroup>
           {forms.map((form) => {
-            return <FormCheckBox name={form} />;
+            return <FormCheckBox name={form} key={form}/>;
           })}
         </FormGroup>
       </FormControl>
@@ -332,7 +334,7 @@ function BasicSelect() {
             size="small"
             style={{ width: "50%", marginTop: "10px" }}
             required
-            id="outlined-basic"
+            id={props.index}
             label="Option"
             variant="outlined"
             defaultValue={props.option}
