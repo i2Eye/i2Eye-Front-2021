@@ -17,6 +17,9 @@ import {
   Checkbox,
   ListItem,
   ListItemText,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import Data from "./StationTestData.json";
@@ -81,13 +84,14 @@ function AddFormTab() {
         <div>
           <TextField
             size="small"
-            style={{ width: "80%", marginTop: "10px" }}
+            style={{ width: "50%", marginTop: "10px" }}
             required
             id="outlined-basic"
             label="Question"
             variant="outlined"
             onChange={handleTextChange(props.index)}
           />
+          
           <IconButton onClick={addQuestion}>
             <AddCircle />
           </IconButton>
@@ -97,6 +101,7 @@ function AddFormTab() {
           >
             <RemoveCircle />
           </IconButton>
+          <BasicSelect />
         </div>
       </ul>
     );
@@ -113,6 +118,7 @@ function AddFormTab() {
     >
       <List>
         <ul>
+          
           <TextField
             required
             id="outlined-basic"
@@ -288,6 +294,90 @@ function DropFormTab() {
     </Paper>
   );
 }
+
+function BasicSelect() {
+  const [type, setType] = React.useState("text");
+
+  const handleChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const [questions, setQuestions] = React.useState([""]);
+
+  const handleTextChange = (qnIndex) => {
+    return (e) => {
+      let current = questions;
+      current[qnIndex] = e.target.value;
+      setQuestions(current);
+    };
+  };
+
+  const addQuestion = () =>
+    setQuestions((prev) => {
+      prev.forEach((str) => console.log(str));
+      return [...prev, ""];
+    });
+  const removeQuestion = (qnIndex) => () =>
+    setQuestions((prev) => {
+      prev.forEach((str) => console.log(str));
+      return prev.filter((qn, index) => index !== qnIndex);
+    });
+
+  function InputField(props) {
+    return (
+      <ul>
+        <div>
+          <TextField
+            size="small"
+            style={{ width: "50%", marginTop: "10px" }}
+            required
+            id="outlined-basic"
+            label="Option"
+            variant="outlined"
+            onChange={handleTextChange(props.index)}
+          />
+          
+          <IconButton onClick={addQuestion}>
+            <AddCircle />
+          </IconButton>
+          <IconButton
+            onClick={removeQuestion(props.index)}
+            disabled={questions.length === 1}
+          >
+            <RemoveCircle />
+          </IconButton>
+        </div>
+      </ul>
+    );
+  }
+
+  return (
+    <Box>
+      <FormControl  sx={{ m: 1, minWidth: 80 }}>
+        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={type}
+          label="Age"
+          onChange={handleChange}
+          autoWidth
+        >
+          <MenuItem value="text">Text</MenuItem>
+          <MenuItem value="radio">Radio</MenuItem>
+          <MenuItem value="checkbox">Checkbox</MenuItem>
+        </Select>
+      </FormControl>
+      {type ==="radio" && questions.map((question, index) => {
+          return <InputField question={question} index={index} />;
+        })}
+      {type==="checkbox" && questions.map((question, index) => {
+          return <InputField question={question} index={index} />;
+        })}
+    </Box>
+  );
+}
+
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
