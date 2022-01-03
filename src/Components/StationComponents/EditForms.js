@@ -299,7 +299,7 @@ function DropFormTab() {
 }
 
 function BasicSelect() {
-  const [type, setType] = React.useState();
+  const [type, setType] = React.useState("text");
 
   const handleChange = (event) => {
     setType(event.target.value);
