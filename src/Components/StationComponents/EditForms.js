@@ -93,7 +93,8 @@ function AddFormTab() {
         const updated = prev.slice();
         updated[qnIndex].type = newType;
         if (newType !== "text") {
-          updated[qnIndex].options = [{option: ""}];
+          updated[qnIndex].optionCounter = 1;
+          updated[qnIndex].options = [{option: "", key: 0}];
         }
         return updated;
       })
@@ -114,16 +115,33 @@ function AddFormTab() {
   // for radio and checkbox types
   const addOption = (qnIndex) => () => setQuestions((prev) => {
       const updated = prev.slice();
-      updated[qnIndex].options.push({option: ""});
+      updated[qnIndex].options.push({option: "", key: updated[qnIndex].optionCounter});
+      updated[qnIndex].optionCounter += 1;
       return updated;
     }
   );
-  const removeOption = (qnIndex, opIndex) => () =>setQuestions((prev) => {
+  const removeOption = (qnIndex, opIndex) => () => setQuestions((prev) => {
       const updated = prev.slice();
       updated[qnIndex].options.splice(opIndex, 1);
       return updated;
     }
   );
+
+  const handleSubmit = () => {
+    const final = questions.slice();
+    for (let i = 0; i < final.length; i++) {
+      const questionHolder = final[i];
+      questionHolder.key = i;
+      if (questionHolder.type !== "text") {
+        const optionsHolder = questionHolder.options;
+        questionHolder.optionCounter = optionsHolder.length;
+        for (let j = 0; j < optionsHolder.length; j++) {
+          optionsHolder[j].key = j;
+        }
+      }
+    }
+    console.log(final);
+  };
 
   return (
     <Paper
@@ -161,13 +179,13 @@ function AddFormTab() {
             </FormControl>
             <List>
               {(question.type ==="radio" || question.type === "checkbox") && question.options.map((optionHolder, opIndex) => {
-                return <OptionsField option={optionHolder.option} index={opIndex} handleTextChange={handleOptionChange(qnIndex, opIndex)} disabled={question.options.length === 1} addOption={addOption(qnIndex)} removeOption={removeOption(qnIndex, opIndex)} />;
+                return <OptionsField key={optionHolder.key} option={optionHolder.option} handleTextChange={handleOptionChange(qnIndex, opIndex)} disabled={question.options.length === 1} addOption={addOption(qnIndex)} removeOption={removeOption(qnIndex, opIndex)} />;
               })}
             </List>
           </ul>
         ))}
       </List>
-      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained">Submit</Button>
+      <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained" type="submit" onClick={handleSubmit}>Submit</Button>
     </Paper>
   )
 }
@@ -180,10 +198,8 @@ function OptionsField(props) {
           size="small"
           style={{ width: "50%", marginTop: "10px" }}
           required
-          id={props.index}
           label="Option"
           variant="outlined"
-          defaultValue={props.option}
           value={props.option}
           onChange={props.handleTextChange}
         />
@@ -363,7 +379,7 @@ export default function BasicTabs() {
           <AddFormTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <UpdateFormTab />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <DropFormTab />
