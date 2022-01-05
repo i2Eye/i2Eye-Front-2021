@@ -1,0 +1,41 @@
+{
+    "formName": "Personal Info",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Name",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "Gender",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 2,
+            "question": "Hobbies",
+            "type": "checkbox",
+            "optionCounter": 3,
+            "options": [
+                {
+                    "option": "Basketball",
+                    "key": 0
+                }, {
+                    "option": "Drawing",
+                    "key": 1
+                }, {
+                    "option": "Archery",
+                    "key": 2
+                }
+            ]
+        }
+    ]
+}

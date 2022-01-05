@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {
   Tab,
   Tabs,
-  Typography,
   Box,
   Paper,
   TextField,
@@ -22,7 +21,8 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import Data from "./StationTestData.json";
+import Data from "./TestData/StationTestData.json";
+import TestForm from "./TestData/FormTestData.json";
 import { Link } from "react-router-dom";
 
 function TabPanel(props) {
@@ -59,8 +59,42 @@ function a11yProps(index) {
 }
 
 function AddFormTab() {
-  const [key, setKey] = React.useState(1);
-  const [questions, setQuestions] = React.useState([{question: "", type: "text", key: 0}]);
+  return (
+    <EditFormTab formName={""} initKey={1} questions={[{question: "", type: "text", key: 0}]} />
+  )
+}
+
+function UpdateFormTab() {
+  const [chosen, setChosen] = React.useState(false);
+  const [formData, setData] = React.useState(null);
+  const fetchForm = (formName) => () => {
+    // should return corresponding form
+    setData(TestForm);
+    // console.log(formData.formName);
+    setChosen(true);
+  };
+
+  return (
+    <Paper
+      style={{
+        paddingTop: 20,
+        paddingBottom: 2,
+      }}
+    >
+      {(chosen && formData !== undefined) 
+        ? <EditFormTab formName={formData.formName} initKey={formData.questions.length} questions={formData.questions} />
+        : <ChooseForm fetchForm={fetchForm} />
+      }
+    </Paper>
+  )
+}
+
+function EditFormTab(props) {
+  const [formName, setFormName] = React.useState(props.formName);
+  const [key, setKey] = React.useState(props.initKey);
+  const [questions, setQuestions] = React.useState(props.questions);
+
+  const handleFormName = (e) => setFormName(e.target.value);
 
   const handleQuestionChange = (qnIndex) => {
     return (e) => {
@@ -140,21 +174,15 @@ function AddFormTab() {
         }
       }
     }
-    console.log(final);
+    const newForm = {formName: formName, questions: final}
+    console.log(newForm);
   };
 
   return (
-    <Paper
-      style={{
-        paddingTop: 20,
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingBottom: 20,
-      }}
-    >
+    <div>
       <List>
         <ul style={{marginBottom: 10}}>
-          <TextField required id="outlined-basic" label="Form Name" variant="outlined" /><br></br>
+          <TextField required id="outlined-basic" label="Form Name" variant="outlined" onChange={handleFormName}/><br></br>
         </ul>
         {questions.map((question, qnIndex) => (
           <ul key={question.key}>
@@ -163,30 +191,32 @@ function AddFormTab() {
               <IconButton onClick={addQuestion}><AddCircle /></IconButton>
               <IconButton onClick={removeQuestion(qnIndex)} disabled={questions.length === 1}><RemoveCircle /></IconButton>
             </div>
-            <FormControl  sx={{ m: 1, minWidth: 80 }}>
-              <InputLabel id="demo-simple-select-label">Type</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={question.type}
-                onChange={handleTypeChange(qnIndex)}
-                autoWidth
-              >
-                <MenuItem value="text">Text</MenuItem>
-                <MenuItem value="radio">Radio</MenuItem>
-                <MenuItem value="checkbox">Checkbox</MenuItem>
-              </Select>
-            </FormControl>
-            <List>
-              {(question.type ==="radio" || question.type === "checkbox") && question.options.map((optionHolder, opIndex) => {
-                return <OptionsField key={optionHolder.key} option={optionHolder.option} handleTextChange={handleOptionChange(qnIndex, opIndex)} disabled={question.options.length === 1} addOption={addOption(qnIndex)} removeOption={removeOption(qnIndex, opIndex)} />;
-              })}
-            </List>
+            <div style={{paddingTop: 15}}>
+              <FormControl  sx={{ m: 1, minWidth: 80 }}>
+                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={question.type}
+                  onChange={handleTypeChange(qnIndex)}
+                  autoWidth
+                >
+                  <MenuItem value="text">Text</MenuItem>
+                  <MenuItem value="radio">Radio</MenuItem>
+                  <MenuItem value="checkbox">Checkbox</MenuItem>
+                </Select>
+              </FormControl>
+              <List>
+                {(question.type ==="radio" || question.type === "checkbox") && question.options.map((optionHolder, opIndex) => {
+                  return <OptionsField key={optionHolder.key} option={optionHolder.option} handleTextChange={handleOptionChange(qnIndex, opIndex)} disabled={question.options.length === 1} addOption={addOption(qnIndex)} removeOption={removeOption(qnIndex, opIndex)} />;
+                })}
+              </List>
+            </div>
           </ul>
         ))}
       </List>
       <Button style ={{background: '#2B6AE2', margin: '40px', float: 'right', color: 'white'}} variant="contained" type="submit" onClick={handleSubmit}>Submit</Button>
-    </Paper>
+    </div>
   )
 }
 
@@ -218,7 +248,7 @@ function OptionsField(props) {
   );
 }
 
-function UpdateFormTab() {
+function ChooseForm(props) {
   const registration = {
     stationName: "Registration",
     tag: "registration",
@@ -241,12 +271,7 @@ function UpdateFormTab() {
   var i; // For registration form index (used below)
 
   return (
-    <Paper
-      style={{
-        paddingTop: 20,
-        paddingBottom: 2,
-      }}
-    >
+    <div>
       <FormLabel
         style={{
           paddingLeft: 30,
@@ -263,8 +288,9 @@ function UpdateFormTab() {
           }}
           key={i + 1}
           button
-          component={Link}
-          to={`/edit_forms/${registration.tag}`}
+          // component={Link}
+          onClick={props.fetchForm("Registration")}
+          // to={`/edit_forms/${registration.tag}`}
         >
           <ListItemText
             id={registration.stationName}
@@ -282,8 +308,9 @@ function UpdateFormTab() {
                 }}
                 key={index}
                 button
-                component={Link}
-                to={`/edit_forms/${station.tag}`}
+                // component={Link}
+                onClick={props.fetchForm(station.name)}
+                // to={`/edit_forms/${station.tag}`}
               >
                 <ListItemText id={station.name} primary={station.name} />
               </ListItem>
@@ -291,7 +318,7 @@ function UpdateFormTab() {
           )
         )}
       </List>
-    </Paper>
+    </div>
   );
 }
 
