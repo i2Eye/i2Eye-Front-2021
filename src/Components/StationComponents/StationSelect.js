@@ -1,13 +1,17 @@
 /* eslint-disable default-case */
 import React, { Component } from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import Switch from "@material-ui/core/Switch";
-import Paper from "@material-ui/core/Paper";
+import {
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Switch,
+  Paper,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
+import Data from "./StationTestData.json";
+import { getStationAvailability } from "../../dbFunctions";
 
 const useStyles = (theme) => ({
   root: {
@@ -19,29 +23,45 @@ const useStyles = (theme) => ({
 
 class StationSelect extends Component {
   state = {
-    stations: [
-      { name: "Oral Health", tag: "oralHealth", checked: true },
-      {
-        name: "BMI and Abdominal Obesity",
-        tag: "bmi",
-        checked: true,
-      },
-      { name: "Eye Screening", tag: "eyeScreening", checked: true },
-      { name: "Phlebotomy Test", tag: "phlebotomy", checked: true },
-      {
-        name: "Fingerstick Blood Test",
-        tag: "fingerstickAnemia",
-        checked: true,
-      },
-      { name: "Doctor Consult", tag: "doctorConsult", checked: true },
-      {
-        name: "Fingerstick Test (RCBG)",
-        tag: "fingerstickRCBG",
-        checked: true,
-      },
-      { name: "Blood Pressure Test", tag: "bloodPressure", checked: true },
-    ],
+    stations: [],
   };
+
+  /** Reads station names and tags from json file */
+  constructor(props) {
+    super(props);
+    var stationsArray = [];
+
+    for (var i = 0; i < Data.length; i++) {
+      stationsArray.push({
+        name: Data[i].stationName,
+        tag: Data[i].tag,
+        checked: false, // Stations all set as unavailable first
+      });
+    }
+    this.state = { stations: stationsArray };
+  }
+
+  /** Updates the availability of each station using data from backend */
+  getAvailabilities = () => {
+    const availabilityPromise = getStationAvailability();
+    const promisedAvailabilities = availabilityPromise.then((result) => {
+      return result;
+    });
+
+    const newStations = [...this.state.stations];
+    const setAvailabilities = async () => {
+      const actualAvailabilities = await promisedAvailabilities;
+      for (var i = 0; i < Data.length; i++) {
+        newStations[i].checked = actualAvailabilities[newStations[i].name];
+      }
+      this.setState({ stations: newStations });
+    };
+    setAvailabilities();
+  };
+
+  componentDidMount() {
+    this.getAvailabilities();
+  }
 
   /* Takes in an index to find which station to handle. The event prop is automatically passed in through onChange and the state is updated */
   handleToggle = (index) => (event) => {

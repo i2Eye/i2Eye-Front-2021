@@ -1,0 +1,36 @@
+[
+    {"hi this is just an extra json file with all the station names following the frontend, paste this data into the StationTestData.json after the stations are named the same in frontend and backend, then this file can just be deleted": "delete this file later"},
+    { 
+        "stationName": "Oral Health", 
+        "tag": "oralHealth", 
+        "available": "false" 
+    }, { 
+        "stationName": "BMI and Abdominal Obesity", 
+        "tag": "bmi", 
+        "available": "true" 
+    }, { 
+        "stationName": "Eye Screening", 
+        "tag": "eyeScreening", 
+        "available": "true" 
+    }, { 
+        "stationName": "Phlebotomy Test", 
+        "tag": "phlebotomy", 
+        "available": "true" 
+    }, { 
+        "stationName": "Fingerstick Blood Test", 
+        "tag": "fingerstickAnemia", 
+        "available": "true" 
+    }, { 
+        "stationName": "Doctor Consult", 
+        "tag": "doctorConsult", 
+        "available": "true" 
+    }, { 
+        "stationName": "Fingerstick Test (RCBG)", 
+        "tag": "fingerstickRCBG", 
+        "available": "true" 
+    }, { 
+        "stationName": "Blood Pressure Test", 
+        "tag": "bloodPressure", 
+        "available": "true" 
+    }
+]

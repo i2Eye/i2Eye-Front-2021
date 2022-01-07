@@ -61,3 +61,4 @@ typings/
 .env
 
 db/__pycache__/
+db
