@@ -1,0 +1,22 @@
+{
+    "formName": "Doctor Consult",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Urgent doctor's consult: Reason for consultation/chief complaint",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "Urgent doctor's consult: Others (include prescriptions if any)",
+            "type": "text"
+        }, {
+            "key": 2,
+            "question": "Standard doctor's consult: Reason for consultation/chief complaint",
+            "type": "text"
+        }, {
+            "key": 3,
+            "question": "Standard doctor's consult: Others (include prescriptions if any)",
+            "type": "text"
+        }
+    ]
+}

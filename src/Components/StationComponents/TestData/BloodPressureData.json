@@ -1,0 +1,37 @@
+{
+    "formName": "Blood Pressure Test",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Systolic BP Reading 1 (mmHg)",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "Diastolic BP Reading 1 (mmHg)",
+            "type": "text"
+        }, {
+            "key": 2,
+            "question": "Systolic BP Reading 2 (mmHg)",
+            "type": "text"
+        }, {
+            "key": 3,
+            "question": "Diastolic BP Reading 2 (mmHg)",
+            "type": "text"
+        }, {
+            "key": 4,
+            "question": "Is patient > 18 years old?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }
+    ]
+}
+  

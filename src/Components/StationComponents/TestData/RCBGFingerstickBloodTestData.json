@@ -1,0 +1,24 @@
+{
+    "formName": "Fingerstick Test (RCBG)",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Is patient > 18 years old?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 1,
+            "question": "Random capillary blood glucose (mg/dL)",
+            "type": "text"
+        }
+    ]
+}

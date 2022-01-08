@@ -1,0 +1,309 @@
+{
+    "formName": "Registration",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Name",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "NRIC",
+            "type": "text"
+        }, {
+            "key": 2,
+            "question": "Gender",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Female",
+                    "key": 0
+                }, {
+                    "option": "Male",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 3,
+            "question": "Age",
+            "type": "text"
+        }, {
+            "key": 4,
+            "question": "Birthday",
+            "type": "text"
+        }, {
+            "key": 5,
+            "question": "Highest Education Qualification",
+            "type": "radio",
+            "optionCounter": 5,
+            "options": [
+                {
+                    "option": "No formal qualification",
+                    "key": 0
+                }, {
+                    "option": "Primary (complete 6th standard)",
+                    "key": 1
+                }, {
+                    "option": "Secondary",
+                    "key": 2
+                }, {
+                    "option": "Higher Secondary",
+                    "key": 3
+                }, {
+                    "option": "Above Higher Secondary",
+                    "key": 4
+                }
+            ]
+        }, {
+            "key": 6,
+            "question": "Occupation",
+            "type": "radio",
+            "optionCounter": 9,
+            "options": [
+                {
+                    "option": "Student",
+                    "key": 0
+                }, {
+                    "option": "Homemaker/Housewife",
+                    "key": 1
+                }, {
+                    "option": "Religious Work",
+                    "key": 2
+                }, {
+                    "option": "Professional",
+                    "key": 3
+                }, {
+                    "option": "Service Industry",
+                    "key": 4
+                }, {
+                    "option": "Manual Labourer",
+                    "key": 5
+                }, {
+                    "option": "Skilled Labourer",
+                    "key": 6
+                }, {
+                    "option": "Manufacturing",
+                    "key": 7
+                }, {
+                    "option": "Unemployed",
+                    "key": 8
+                }
+            ]
+        }, {
+            "key": 7,
+            "question": "How often do you exercise or do strenuous activity (lifting heavy objects, farming, construction work) per week?",
+            "type": "radio",
+            "optionCounter": 4,
+            "options": [
+                {
+                    "option": "1-2 times a week",
+                    "key": 0
+                }, {
+                    "option": "3-4 times a week",
+                    "key": 1
+                }, {
+                    "option": "5-7 times a week",
+                    "key": 2
+                }, {
+                    "option": "Professional",
+                    "key": 3
+                }
+            ]
+        }, {
+            "key": 8,
+            "question": "How long do you exercise per session (in hours)?",
+            "type": "text"
+        }, {
+            "key": 9,
+            "question": "Monthly Household Income (INR) [total]",
+            "type": "text"
+        }, {
+            "key": 10,
+            "question": "How many people are there in the household (including yourself)?",
+            "type": "text"
+        }, {
+            "key": 11,
+            "question": "Are you currently suffering from any of the following symptoms?",
+            "type": "checkbox",
+            "optionCounter": 7,
+            "options": [
+                {
+                    "option": "Cough lasting for > 2 weeks",
+                    "key": 0
+                }, {
+                    "option": "Coughing up blood",
+                    "key": 1
+                }, {
+                    "option": "Breathlessness",
+                    "key": 2
+                }, {
+                    "option": "Weight loss",
+                    "key": 3
+                }, {
+                    "option": "Loss of appetite",
+                    "key": 4
+                }, {
+                    "option": "Fever",
+                    "key": 5
+                }, {
+                    "option": "None of the above",
+                    "key": 6
+                }
+            ]
+        }, {
+            "key": 12,
+            "question": "Do you have tubercolosis?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 13,
+            "question": "Do you live with someone with tubercolosis?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 14,
+            "question": "If Y to living with someone with tubercolosis, was he/she diagnosed more than 4 months ago?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 15,
+            "question": "Do you have any blood borne diseases?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 16,
+            "question": "If Y to having a blood borne disease, what Blood Borne Disease do you have?",
+            "type": "text"
+        }, {
+            "key": 17,
+            "question": "Please enter any pre-existing medical conditions that you have.",
+            "type": "text"
+        }, {
+            "key": 18,
+            "question": "Do you know anyone in your family who has diabetes?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 19,
+            "question": "If Y to knowing anyone in the family who has diabetes, how many family members have diabetes?",
+            "type": "text"
+        }, {
+            "key": 20,
+            "question": "Do you know anyone in your family who has anemia?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 21,
+            "question": "If Y to knowing anyone in the family who has anemia, how many family members have anemia?",
+            "type": "text"
+        }, {
+            "key": 22,
+            "question": "Do you know anyone in your family who has oral cancer?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 23,
+            "question": "If Y to knowing anyone in the family who has oral cancer, how many family members have oral cancer?",
+            "type": "text"
+        }, {
+            "key": 24,
+            "question": "Other pre-existing conditions of family member(s) (if any)",
+            "type": "text"
+        }, {
+            "key": 25,
+            "question": "Please select all the stations you would like to go",
+            "type": "checkbox",
+            "optionCounter": 8,
+            "options": [
+                {
+                    "option": "Station 1 Oral Health",
+                    "key": 0
+                }, {
+                    "option": "Station 2 BMI & Abdominal Obesity",
+                    "key": 1
+                }, {
+                    "option": "Station 3 Eye Screening",
+                    "key": 2
+                }, {
+                    "option": "Station 4 Phlebotomy Test",
+                    "key": 3
+                }, {
+                    "option": "Station 5 Fingerstick Blood Test (Anemia)",
+                    "key": 4
+                }, {
+                    "option": "Station 6 Fingerstick Blood Test (RCBG)",
+                    "key": 5
+                }, {
+                    "option": "Station 7 Blood Pressure",
+                    "key": 6
+                }, {
+                    "option": "Station 8 Doctor's Consult",
+                    "key": 7
+                }
+            ]
+        }
+    ]
+}

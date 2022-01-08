@@ -1,0 +1,18 @@
+{
+    "formName": "BMI",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Height (m)",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "Weight (kg)",
+            "type": "text"
+        }, {
+            "key": 2,
+            "question": "Waist circumference (cm)",
+            "type": "text"
+        }
+    ]
+}

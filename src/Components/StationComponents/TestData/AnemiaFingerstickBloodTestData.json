@@ -1,0 +1,71 @@
+{
+    "formName": "Fingerstick Blood Test (Anemia)",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Hb level (g/dL)",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "How many meals do you eat a day?",
+            "type": "text"
+        }, {
+            "key": 2,
+            "question": "How often do you eat protein (eg. daal, mung, rajma, chole, chana)",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 3,
+            "question": "How often do you eat carbohydrates (eg. chapati, rice)",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 4,
+            "question": "How often do you eat vegetables (eg. gobhi, patta gobhi, saag)",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 5,
+            "question": "How often do you eat sweets/desserts (eg. gulab jamun)",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Male",
+                    "key": 0
+                }, {
+                    "option": "Female",
+                    "key": 1
+                }
+            ]
+        }
+    ]
+}
+  

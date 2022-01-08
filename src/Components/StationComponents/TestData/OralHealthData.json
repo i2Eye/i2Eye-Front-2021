@@ -1,0 +1,97 @@
+{
+    "formName": "Oral Health",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Dental ID",
+            "type": "text"
+        }, {
+            "key": 1,
+            "question": "Have you ever consumed in the past/present any form of intoxications e.g. tobacco, beedi, cigarettes (include chewing/smoking)?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 2,
+            "question": "If Y to having consumed, what do you consume?",
+            "type": "text"
+        }, {
+            "key": 3,
+            "question": "If Y to having consumed, how many pieces/sticks on average do you consume a day?",
+            "type": "radio",
+            "optionCounter": 3,
+            "options": [
+                {
+                    "option": "<1 a day",
+                    "key": 0
+                }, {
+                    "option": "1-10 a day",
+                    "key": 1
+                }, {
+                    "option": ">10 a day",
+                    "key": 2
+                }
+            ]
+        }, {
+            "key": 4,
+            "question": "If Y to having consumed, for how long have you been consuming? (e.g. Enter '4y, 5m' if 4 years and 5 months)",
+            "type": "text"
+        }, {
+            "key": 5,
+            "question": "If Y to having consumed, why do you still consume?",
+            "type": "text"
+        }, {
+            "key": 6,
+            "question": "Are you still consuming?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 7,
+            "question": "If N to consuming now, when did you stop consuming?",
+            "type": "text"
+        }, {
+            "key": 8,
+            "question": "If N to consuming now, why did you choose to stop?",
+            "type": "text"
+        }, {
+            "key": 9,
+            "question": "If Y to consuming now, have you tried quitting?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 10,
+            "question": "If Y, for how long? (e.g. Enter '4y, 5m' if 4 years and 5 months)",
+            "type": "text"
+        }, {
+            "key": 11,
+            "question": "If Y to having tried quitting, what made you consume again?",
+            "type": "text"
+        }
+    ]
+}

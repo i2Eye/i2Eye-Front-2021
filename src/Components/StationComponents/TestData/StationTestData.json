@@ -16,15 +16,15 @@
         "tag": "phlebotomy", 
         "available": "true" 
     }, { 
-        "stationName": "Fingerstick Blood Test (Anemia)", 
+        "stationName": "Anemia Fingerstick Blood Test", 
         "tag": "fingerstickAnemia", 
         "available": "true" 
     }, { 
-        "stationName": "Doctor's Consult", 
+        "stationName": "Doctor Consult", 
         "tag": "doctorConsult", 
         "available": "true" 
     }, { 
-        "stationName": "Fingerstick Blood Test (RCBG)", 
+        "stationName": "RCBG Fingerstick Blood Test", 
         "tag": "fingerstickRCBG", 
         "available": "true" 
     }, { 

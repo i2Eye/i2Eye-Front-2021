@@ -1,0 +1,50 @@
+{
+    "formName": "Phlebotomy Test",
+    "questions": [
+        {
+            "key": 0,
+            "question": "Are you 40 years old or above?",
+            "type": "radio",
+            "optionCounter": 2,
+            "options": [
+                {
+                    "option": "Yes",
+                    "key": 0
+                }, {
+                    "option": "No",
+                    "key": 1
+                }
+            ]
+        }, {
+            "key": 1,
+            "question": "Are you suffering from any of the following conditions?",
+            "type": "checkbox",
+            "optionCounter": 6,
+            "options": [
+                {
+                    "option": "High blood pressure",
+                    "key": 0
+                }, {
+                    "option": "Diabetes",
+                    "key": 1
+                }, {
+                    "option": "Family member with coronory artery disease",
+                    "key": 2
+                }, {
+                    "option": "Family member with high cholesterol",
+                    "key": 3
+                }, {
+                    "option": "Chronic kidney disease",
+                    "key": 4
+                }, {
+                    "option": "Smoking/ intoxication consumption e.g. tobacco",
+                    "key": 5
+                }
+            ]
+        }, {
+            "key": 2,
+            "question": "Vimta Registration No.",
+            "type": "text"
+        }
+    ]
+}

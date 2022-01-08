@@ -22,8 +22,7 @@ import {
 } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import Data from "./TestData/StationTestData.json";
-import TestForm from "./TestData/FormTestData.json";
-import { Link } from "react-router-dom";
+import Registration from "./TestData/RegistrationData.json";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -69,7 +68,7 @@ function UpdateFormTab() {
   const [formData, setData] = React.useState(null);
   const fetchForm = (formName) => () => {
     // should return corresponding form
-    setData(TestForm);
+    setData(formName);
     // console.log(formData.formName);
     setChosen(true);
   };
@@ -182,7 +181,7 @@ function EditFormTab(props) {
     <div>
       <List>
         <ul style={{marginBottom: 10}}>
-          <TextField required id="outlined-basic" label="Form Name" variant="outlined" onChange={handleFormName}/><br></br>
+          <TextField required id="outlined-basic" label="Form Name" InputLabelProps={{ shrink: true }} variant="outlined" value={formName} onChange={handleFormName}/><br></br>
         </ul>
         {questions.map((question, qnIndex) => (
           <ul key={question.key}>
@@ -268,7 +267,13 @@ function ChooseForm(props) {
   };
   getStations();
 
-  var i; // For registration form index (used below)
+  var stationForm; // To set station form name in render below.
+
+  /** Imports the given station's form data from the correct json file. */
+  function loadFormData(name) {
+    var formData = require(`./TestData/${name}Data.json`);
+    return formData;
+  }
 
   return (
     <div>
@@ -286,11 +291,9 @@ function ChooseForm(props) {
             paddingTop: 4,
             paddingLeft: 30,
           }}
-          key={i + 1}
+          key="0"
           button
-          // component={Link}
-          onClick={props.fetchForm("Registration")}
-          // to={`/edit_forms/${registration.tag}`}
+          onClick={props.fetchForm(Registration)}
         >
           <ListItemText
             id={registration.stationName}
@@ -299,18 +302,16 @@ function ChooseForm(props) {
         </ListItem>
         {stations.map(
           (station, index) => (
-            (i = index),
+            (stationForm = station.name.replace(/\s/g, '')), // Remove spaces from station name
             (
               <ListItem
                 style={{
                   paddingTop: 4,
                   paddingLeft: 30,
                 }}
-                key={index}
+                key={index + 1}
                 button
-                // component={Link}
-                onClick={props.fetchForm(station.name)}
-                // to={`/edit_forms/${station.tag}`}
+                onClick={props.fetchForm(loadFormData(stationForm))}
               >
                 <ListItemText id={station.name} primary={station.name} />
               </ListItem>
