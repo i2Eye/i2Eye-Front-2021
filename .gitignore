@@ -60,4 +60,10 @@ typings/
 # dotenv environment variables file
 .env
 
+
+# db
+db/.env
+db/venv/
+db/.data/
+db/.vscode/
 db/__pycache__/
